@@ -3,21 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackageId>FirebaseCoreSDK</PackageId>
-    <PackageVersion>1.0.0-alpha</PackageVersion>
+    <PackageVersion>1.0.0-beta</PackageVersion>
     <Authors>Shoaib Shakeel</Authors>
     <PackageProjectUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</PackageProjectUrl>
     <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Description>Firebase client for .net core</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Firebase SDK for .NET Core server side apps</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>firebase .net core</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Firebase\Notification\" />
-    <Folder Include="Firebase\Database\" />
-    <Folder Include="HttpClients\Database\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />

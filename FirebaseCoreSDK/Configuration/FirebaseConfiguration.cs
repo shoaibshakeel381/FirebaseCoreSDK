@@ -6,8 +6,6 @@
     using Firebase.Auth.Encryption;
     using Firebase.Auth.Models;
 
-    using HttpClients.Auth;
-
     public class FirebaseConfiguration
     {
         internal FirebaseServiceAccess RequestedAccess { get; }
@@ -20,15 +18,20 @@
             {
                 var scopeList = new List<string>() { "https://www.googleapis.com/auth/userinfo.email" };
 
-                if (FirebaseServiceAccess.DatabaseOnly == (FirebaseServiceAccess.DatabaseOnly & RequestedAccess))
+                if (FirebaseServiceAccess.Database == (FirebaseServiceAccess.Database & RequestedAccess))
                 {
                     scopeList.Add("https://www.googleapis.com/auth/firebase");
                     scopeList.Add("https://www.googleapis.com/auth/firebase.database");
                 }
 
-                if (FirebaseServiceAccess.StorageOnly == (FirebaseServiceAccess.StorageOnly & RequestedAccess))
+                if (FirebaseServiceAccess.Storage == (FirebaseServiceAccess.Storage & RequestedAccess))
                 {
                     scopeList.Add("https://www.googleapis.com/auth/devstorage.full_control");
+                }
+
+                if (FirebaseServiceAccess.CloudMessaging == (FirebaseServiceAccess.CloudMessaging & RequestedAccess))
+                {
+                    scopeList.Add("https://www.googleapis.com/auth/firebase.messaging");
                 }
 
                 return scopeList;
@@ -51,6 +54,8 @@
 
         public virtual string FirebaseHost => "firebaseio.com";
 
+        public virtual string CloudMessagingAuthority => "https://fcm.googleapis.com/";
+
         public virtual string StorageBaseAuthority => "https://storage.googleapis.com";
 
         public virtual string StorageBaseAuthority2 => " https://www.googleapis.com/storage";
@@ -69,9 +74,9 @@
     [Flags]
     public enum FirebaseServiceAccess
     {
-        DatabaseOnly = 0b00000001,
-        StorageOnly = 0b00000010,
-        PushOnly = 0b00000100,
+        Database = 0b00000001,
+        Storage = 0b00000010,
+        CloudMessaging = 0b00000100,
         Full = 0b00000111
     }
 }

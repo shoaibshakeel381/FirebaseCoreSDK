@@ -60,7 +60,7 @@
         public Task RemoveObjectAsync(string path)
         {
             var urlEncodedPath = GetUrlEncodedPath(path);
-            var deleteUri = new Uri($"{ _configuration.StorageBaseAuthority2}/v1/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedPath}", UriKind.Absolute);
+            var deleteUri = new Uri($"{_configuration.StorageBaseAuthority2}/v1/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedPath}", UriKind.Absolute);
             return _httpClient.SendStorageRequestAsync<object>(deleteUri, HttpMethod.Delete);
         }
 
@@ -216,6 +216,27 @@
         private string BuilCanonicalizedResource(string path)
         {
             return $"/{_credentials.GetDefaultBucket().Trim().TrimSlashes()}/{WebUtility.UrlEncode(path.TrimSlashes())}";
+        }
+        #endregion
+
+        #region Dispose Methods
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            _httpClient?.Dispose();
+
+        }
+
+        ~FirebaseStorage()
+        {
+            Dispose(false);
         }
         #endregion
     }

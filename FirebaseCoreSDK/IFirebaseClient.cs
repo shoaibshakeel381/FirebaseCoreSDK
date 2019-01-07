@@ -5,6 +5,9 @@
     using Configuration;
 
     using Firebase.Auth;
+    using Firebase.CloudMessaging;
+    using Firebase.Database;
+    using Firebase.Storage;
 
     public interface IFirebaseClient : IDisposable
     {
@@ -12,10 +15,10 @@
 
         IFirebaseAuth Auth { get; }
 
-        //IFirebaseDatabase Database { get; }
+        IFirebaseDatabase Database { get; }
 
-        //IFirebaseNotification PushNotification { get; }
+        IFirebaseCloudMessaging CloudMessaging { get; }
 
-        //IFirebaseStorage Storage { get; }
+        IFirebaseStorage Storage { get; }
     }
 }

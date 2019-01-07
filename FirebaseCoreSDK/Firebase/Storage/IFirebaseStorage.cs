@@ -5,7 +5,7 @@
 
     using Models;
 
-    public interface IFirebaseStorage
+    public interface IFirebaseStorage : IDisposable
     {
         string GetPublicUrl(string path);
 
