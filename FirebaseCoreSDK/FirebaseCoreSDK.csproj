@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>FirebaseCoreSDK</PackageId>
+    <PackageVersion>1.0.0-alpha</PackageVersion>
+    <Authors>Shoaib Shakeel</Authors>
+    <PackageProjectUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>Firebase client for .net core</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>firebase .net core</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Firebase\Notification\" />
+    <Folder Include="Firebase\Database\" />
+    <Folder Include="HttpClients\Database\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
+    <PackageReference Include="jose-jwt" Version="2.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>
