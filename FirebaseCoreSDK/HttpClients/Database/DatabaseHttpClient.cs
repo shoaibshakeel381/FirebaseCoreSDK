@@ -9,8 +9,6 @@
 
     using Configuration;
 
-    using Extensions;
-
     using Firebase.Auth.ServiceAccounts;
     using Firebase.Database;
 
@@ -106,6 +104,18 @@
             return JsonConvert.DeserializeObject<object>(dataAsString);
         }
 
+        public async Task DeletePathAsync(Uri path)
+        {
+            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
+            await SendAsync(() => PrepareDeleteRequest(path)).ConfigureAwait(false);
+        }
+
+        public async Task DeletePathAsync(string path)
+        {
+            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
+            await DeleteAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(false);
+        }
+
         private HttpRequestMessage PrepareGetRequest(Uri path)
         {
             var fullUri = GetFullAbsaluteUrl(path);
@@ -154,6 +164,19 @@
 
             AddAuthHeaders(message);
             return message;
+        }
+
+        private HttpRequestMessage PrepareDeleteRequest(Uri path)
+        {
+            var fullUri = GetFullAbsaluteUrl(path);
+            var message = new HttpRequestMessage
+            {
+                RequestUri = fullUri,
+                Method = HttpMethod.Delete
+            };
+            AddAuthHeaders(message);
+            return message;
+
         }
     }
 }

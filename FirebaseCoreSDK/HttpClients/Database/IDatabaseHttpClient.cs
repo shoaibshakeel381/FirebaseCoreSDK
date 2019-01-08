@@ -22,5 +22,8 @@
 
         Task<object> UpdatePathAsync(string path, IDictionary<string, object> content);
         Task<object> UpdatePathAsync(Uri path, IDictionary<string, object> content);
+
+        Task DeletePathAsync(Uri path);
+        Task DeletePathAsync(string path);
     }
 }
