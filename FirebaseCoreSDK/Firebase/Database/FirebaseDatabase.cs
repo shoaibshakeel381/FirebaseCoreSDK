@@ -19,6 +19,11 @@
             _httpClient = new DatabaseHttpClient(credentials, configuration);
         }
 
+        public IDatabaseRef Ref(string path)
+        {
+            return new DatabaseRef(_httpClient, _configuration, path);
+        }
+
         #region Dispose Methods
         public void Dispose()
         {

@@ -4,5 +4,6 @@
 
     public interface IFirebaseDatabase : IDisposable
     {
+        IDatabaseRef Ref(string path);
     }
 }

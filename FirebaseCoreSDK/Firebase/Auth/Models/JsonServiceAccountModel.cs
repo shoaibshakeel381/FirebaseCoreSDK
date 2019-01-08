@@ -18,5 +18,11 @@
 
         [JsonProperty("client_id")]
         public string ClientId { get; set; }
+
+        [JsonProperty("auth_uri")]
+        public string AuthUri { get; set; }
+
+        [JsonProperty("token_uri")]
+        public string TokenUri { get; set; }
     }
 }

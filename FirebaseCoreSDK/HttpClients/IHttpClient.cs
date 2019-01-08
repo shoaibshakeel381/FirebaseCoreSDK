@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal interface IHttpClient : IDisposable
+    public interface IHttpClient : IDisposable
     {
         Uri GetAuthority();
     }
