@@ -34,12 +34,13 @@
             _jwtPayload = new JwtAuthPayloadGenerator(credentials, configuration);
         }
 
-        public string CreateCustomToken(long userId)
+        public string CreateCustomToken(string userId)
         {
             var jwtPayload = _jwtCustomTokenPayload.GetPayload(new Dictionary<string, string>
             {
-                { "uid", userId.ToString() }
+                { "uid", userId }
             });
+
             var rsaParams = Credentials.GetRSAParams();
 
             string jwtToken;

@@ -5,7 +5,7 @@
 
     public interface IFirebaseAuth : IDisposable
     {
-        string CreateCustomToken(long userId);
+        string CreateCustomToken(string userId);
 
         Task AuthenticateAsync();
     }

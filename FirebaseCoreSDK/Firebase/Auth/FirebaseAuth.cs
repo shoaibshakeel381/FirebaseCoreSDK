@@ -20,7 +20,7 @@
             _httpClient = new AuthHttpClient(credentials, configuration);
         }
 
-        public string CreateCustomToken(long userId)
+        public string CreateCustomToken(string userId)
         {
             return _httpClient.CreateCustomToken(userId);
         }

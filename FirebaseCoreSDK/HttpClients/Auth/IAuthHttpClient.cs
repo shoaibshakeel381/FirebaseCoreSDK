@@ -6,7 +6,7 @@
 
     internal interface IAuthHttpClient : IHttpClient
     {
-        string CreateCustomToken(long userId);
+        string CreateCustomToken(string userId);
 
         Task<FirebaseAccessToken> AuthenticateAsync();
     }
