@@ -5,12 +5,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    public class FirebasePushEnvelope
-    {
-        public FirebasePushEnvelopeMessage Message { get; set; }
-    }
-
-    public class FirebasePushEnvelopeMessage
+    public class FirebasePushMessage
     {
         [JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }

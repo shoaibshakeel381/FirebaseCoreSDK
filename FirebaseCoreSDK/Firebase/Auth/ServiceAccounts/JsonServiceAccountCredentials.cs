@@ -23,6 +23,12 @@
             InitializeFromFile(fileName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content">JSON string containing service account credentials exported from firebase.<br/>
+        /// JSON should contain values for project_id, private_key and client_email</param>
+        /// <param name="fromFile"></param>
         public JsonServiceAccountCredentials(string content, bool fromFile)
         {
             if (fromFile)

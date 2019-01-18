@@ -12,9 +12,9 @@
     public class JwtAuthPayloadGenerator : PayloadGenerator
     {
         private readonly IServiceAccountCredentials _creadentials;
-        private readonly FirebaseConfiguration _configuration;
+        private readonly FirebaseSDKConfiguration _configuration;
 
-        public JwtAuthPayloadGenerator(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public JwtAuthPayloadGenerator(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _creadentials = credentials;
             _configuration = configuration;
@@ -27,7 +27,7 @@
 
             AddToPayload("scope", string.Join<string>(_configuration.GoogleScopeDelimiter, _configuration.AllowedGoogleScopes));
             AddToPayload("iss", _creadentials.GetServiceAccountEmail());
-            AddToPayload("aud", _configuration.GoogleOAuthTokenPath.AbsoluteUri);
+            AddToPayload("aud", _configuration.GoogleOAuthTokenPath);
             AddToPayload("exp", exp.ToString());
             AddToPayload("iat", iat.ToString());
 

@@ -12,9 +12,9 @@
     public class CustomTokenPayloadGenerator : PayloadGenerator
     {
         private readonly IServiceAccountCredentials _creadentials;
-        private readonly FirebaseConfiguration _configuration;
+        private readonly FirebaseSDKConfiguration _configuration;
 
-        public CustomTokenPayloadGenerator(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public CustomTokenPayloadGenerator(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _creadentials = credentials;
             _configuration = configuration;
@@ -27,7 +27,7 @@
 
             AddToPayload("iss", _creadentials.GetServiceAccountEmail());
             AddToPayload("sub", _creadentials.GetServiceAccountEmail());
-            AddToPayload("aud", _configuration.CustomTokenPath.AbsoluteUri);
+            AddToPayload("aud", _configuration.CustomTokenPath);
             AddToPayload("iat", iat.ToString());
             AddToPayload("exp", exp.ToString());
 

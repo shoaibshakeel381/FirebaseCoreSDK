@@ -12,23 +12,28 @@
 
     public sealed class FirebaseClient : IFirebaseClient
     {
-        public FirebaseConfiguration Configuration { get; }
+        public FirebaseSDKConfiguration Configuration { get; }
         public IFirebaseAuth Auth { get; private set; }
         public IFirebaseDatabase Database { get; private set; }
         public IFirebaseCloudMessaging CloudMessaging { get; private set; }
         public IFirebaseStorage Storage { get; private set; }
 
-        public FirebaseClient(IServiceAccountCredentials credentials) :this(credentials, new FirebaseConfiguration())
-        {
-
-        }
-
-        public FirebaseClient(IServiceAccountCredentials credentials, FirebaseServiceAccess requestedAccess) : this(credentials, new FirebaseConfiguration(requestedAccess))
+        public FirebaseClient(FirebaseSDKConfiguration configuration) : this(configuration.Credentials, configuration)
         {
             
         }
 
-        public FirebaseClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        internal FirebaseClient(IServiceAccountCredentials credentials) :this(credentials, new FirebaseSDKConfiguration())
+        {
+
+        }
+
+        internal FirebaseClient(IServiceAccountCredentials credentials, FirebaseServiceAccess requestedAccess) : this(credentials, new FirebaseSDKConfiguration(requestedAccess))
+        {
+            
+        }
+
+        internal FirebaseClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             Configuration = configuration;
 

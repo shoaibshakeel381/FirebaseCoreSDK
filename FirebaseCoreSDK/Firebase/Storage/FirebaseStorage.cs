@@ -23,10 +23,10 @@
     internal class FirebaseStorage : IFirebaseStorage
     {
         private readonly IServiceAccountCredentials _credentials;
-        private readonly FirebaseConfiguration _configuration;
+        private readonly FirebaseSDKConfiguration _configuration;
         private readonly IStorageHttpClient _httpClient;
 
-        public FirebaseStorage(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public FirebaseStorage(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _credentials = credentials;
             _configuration = configuration;
@@ -42,8 +42,8 @@
 
             var normalziedPath = WebUtility.UrlEncode(path.TrimSlashes());
 
-            var auth = _httpClient.GetAuthority().ToString().TrimSlashes();
-            var fullPath = new Uri($"{auth}/{_credentials.GetDefaultBucket()}/{normalziedPath}?alt=media", UriKind.Absolute);
+            var auth = _httpClient.GetAuthority();
+            var fullPath = auth.Append($"/{_credentials.GetDefaultBucket()}/{normalziedPath}?alt=media");
             return fullPath.AbsoluteUri;
         }
 
@@ -153,7 +153,7 @@
         private string EncryptPayload(string signingPayloadAsString)
         {
             string encryptedBase64String;
-            UTF8Encoding byteConverter = new UTF8Encoding();
+            var byteConverter = new UTF8Encoding();
             var payloadBytes = byteConverter.GetBytes(signingPayloadAsString);
 
             using (var rsa = new RSACryptoServiceProvider())

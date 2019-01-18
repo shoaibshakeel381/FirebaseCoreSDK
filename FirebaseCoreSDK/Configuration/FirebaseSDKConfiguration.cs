@@ -5,9 +5,23 @@
 
     using Firebase.Auth.Encryption;
     using Firebase.Auth.Models;
+    using Firebase.Auth.ServiceAccounts;
 
-    public class FirebaseConfiguration
+    using Logging;
+
+    // ReSharper disable once InconsistentNaming
+    public class FirebaseSDKConfiguration
     {
+        public FirebaseSDKConfiguration(): this(FirebaseServiceAccess.Full)
+        {
+        }
+
+        public FirebaseSDKConfiguration(FirebaseServiceAccess requestedAccess)
+        {
+            RequestedAccess = requestedAccess;
+            AccessToken = new FirebaseAccessToken();
+        }
+
         internal FirebaseServiceAccess RequestedAccess { get; }
 
         internal FirebaseAccessToken AccessToken { get; set; }
@@ -42,33 +56,64 @@
 
         internal IJwtProvider JwtTokenProvider => new JoseJwtProvider();
 
-        public virtual Uri GoogleOAuthTokenPath => new Uri("https://www.googleapis.com/oauth2/v4/token");
-
-        public virtual Uri CustomTokenPath => new Uri("https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit");
-
+        /// <summary>
+        /// TTL for one authentication session
+        /// </summary>
         // ReSharper disable once InconsistentNaming
         public virtual TimeSpan AccessTokenTTL => new TimeSpan(0, 4, 0);
 
+        /// <summary>
+        /// TTL for custom token
+        /// </summary>
         // ReSharper disable once InconsistentNaming
         public virtual TimeSpan CustomTokenTTL => new TimeSpan(0, 60, 0);
 
+        /// <summary>
+        /// Automatically authenticate all firebase API requests
+        /// </summary>
+        internal virtual bool AutoAuthenticate => throw new NotImplementedException();
+
+        /// <summary>
+        /// Service account credentials.<br/>
+        /// </summary>
+        public virtual IServiceAccountCredentials Credentials { get; set; }
+
+        /// <summary>
+        /// Custom Logger
+        /// </summary>
+        public virtual IFirebaseLogger Logger { get; set; } = new FirebaseNullLogger();
+
+        /// <summary>
+        /// This is just the host name. Not actual URL.
+        /// </summary>
         public virtual string FirebaseHost => "firebaseio.com";
 
+        /// <summary>
+        /// Google OAuth URL
+        /// </summary>
+        public virtual string GoogleOAuthTokenPath => "https://www.googleapis.com/oauth2/v4/token";
+
+        public virtual string CustomTokenPath => "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit";
+
+        /// <summary>
+        /// Realtime Database service url
+        /// </summary>
+        public virtual string RealtimeDatabaseAuthority => $"https://{Credentials.GetProjectId()}.{FirebaseHost}/";
+
+        /// <summary>
+        /// Cloud Messaging service url
+        /// </summary>
         public virtual string CloudMessagingAuthority => "https://fcm.googleapis.com/";
 
+        /// <summary>
+        /// Storage service url
+        /// </summary>
         public virtual string StorageBaseAuthority => "https://storage.googleapis.com";
 
+        /// <summary>
+        /// Storage service url
+        /// </summary>
         public virtual string StorageBaseAuthority2 => " https://www.googleapis.com/storage";
-
-        public FirebaseConfiguration(): this(FirebaseServiceAccess.Full)
-        {
-        }
-
-        public FirebaseConfiguration(FirebaseServiceAccess requestedAccess)
-        {
-            RequestedAccess = requestedAccess;
-            AccessToken = new FirebaseAccessToken();
-        }
     }
 
     [Flags]

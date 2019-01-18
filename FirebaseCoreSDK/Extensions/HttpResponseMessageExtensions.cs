@@ -12,11 +12,18 @@
             if (response.IsSuccessStatusCode)
                 return;
 
-            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            string request = null;
+            string content = null;
+            if(null != response.RequestMessage.Content)
+                request = await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (response.Content != null)
+                content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             response.Content?.Dispose();
+            response.RequestMessage.Content?.Dispose();
 
-            throw new FirebaseHttpException(content, response.RequestMessage, response);
+            throw new FirebaseHttpException(request, content, response.RequestMessage, response);
         }
     }
 }

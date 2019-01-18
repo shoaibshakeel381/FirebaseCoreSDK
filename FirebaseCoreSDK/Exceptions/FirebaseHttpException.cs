@@ -5,9 +5,10 @@
 
     public class FirebaseHttpException : Exception
     {
-        public HttpRequestMessage RequestMessage { get; private set; }
-        public HttpResponseMessage ResponseMessage { get; private set; }
-        public string ResponseContent { get; private set; }
+        public HttpRequestMessage RequestMessage { get; }
+        public HttpResponseMessage ResponseMessage { get; }
+        public string RequestBody { get; }
+        public string ResponseContent { get; }
 
         public FirebaseHttpException(string message)
             : base(message)
@@ -21,9 +22,10 @@
             : base(innerException.Message, innerException)
         {
         }
-        public FirebaseHttpException(string responseBody,
+        public FirebaseHttpException(string requestBody, string responseBody,
             HttpRequestMessage request, HttpResponseMessage response)
         {
+            RequestBody = requestBody;
             ResponseContent = responseBody;
             RequestMessage = request;
             ResponseMessage = response;

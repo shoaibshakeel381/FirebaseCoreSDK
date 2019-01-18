@@ -18,7 +18,7 @@
 
     internal class StorageHttpClient : HttpClient, IStorageHttpClient
     {
-        public StorageHttpClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration) 
+        public StorageHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) 
             : base(credentials, configuration, new Uri($"{configuration.StorageBaseAuthority.TrimSlashes()}", UriKind.Absolute))
         {
             

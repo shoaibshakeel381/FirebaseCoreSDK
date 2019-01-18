@@ -14,14 +14,14 @@
     internal abstract class HttpClient : System.Net.Http.HttpClient, IHttpClient
     {
         protected readonly IServiceAccountCredentials Credentials;
-        protected readonly FirebaseConfiguration Configuration;
+        protected readonly FirebaseSDKConfiguration Configuration;
         protected readonly Uri Authority;
 
-        protected HttpClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration) : this(credentials, configuration, null)
+        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) : this(credentials, configuration, null)
         {
         }
 
-        protected HttpClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration, Uri authority)
+        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration, Uri authority)
         {
             Credentials = credentials;
             Configuration = configuration;
@@ -35,14 +35,18 @@
 
         protected async Task<string> SendAsync(Func<HttpRequestMessage> requestMessage)
         {
-            var response = await SendAsync(requestMessage()).ConfigureAwait(false);
+            var request = requestMessage();
+
+            Configuration.Logger?.Info($"[{request.Method}] {request.RequestUri.AbsoluteUri}");
+
+            var response = await SendAsync(request).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
 
             if (response.Content == null)
                 return null;
 
             var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
+            Configuration.Logger?.Debug($"[RESPONSE] {dataAsString}");
             return dataAsString;
         }
 
@@ -68,7 +72,7 @@
                 return uri;
             }
 
-            return Authority == null ? uri : new Uri(Authority, uri);
+            return Authority == null ? uri : Authority.Append(uri);
         }
     }
 }

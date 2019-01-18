@@ -10,10 +10,10 @@
 
     internal class FirebaseDatabase : IFirebaseDatabase
     {
-        private readonly FirebaseConfiguration _configuration;
+        private readonly FirebaseSDKConfiguration _configuration;
         private readonly IDatabaseHttpClient _httpClient;
 
-        public FirebaseDatabase(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public FirebaseDatabase(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _configuration = configuration;
             _httpClient = new DatabaseHttpClient(credentials, configuration);

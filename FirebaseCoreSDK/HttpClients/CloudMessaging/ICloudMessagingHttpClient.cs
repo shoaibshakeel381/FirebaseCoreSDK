@@ -1,4 +1,4 @@
-﻿namespace FirebaseCoreSDK.HttpClients.CloudMessagign
+﻿namespace FirebaseCoreSDK.HttpClients.CloudMessaging
 {
     using System.Threading.Tasks;
 
@@ -6,6 +6,6 @@
 
     internal interface ICloudMessagingHttpClient : IHttpClient
     {
-        Task<FirebasePushEnvelopeMessage> SendCloudMessageAsync(FirebasePushEnvelope request);
+        Task<string> SendCloudMessageAsync(FirebasePushMessage request);
     }
 }

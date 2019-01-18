@@ -8,7 +8,7 @@ namespace FirebaseCoreSDK.Firebase.Database
     public static partial class CommandExtensions
     {
         /// <exception cref="ArgumentNullException"><paramref name="content"/> is <see langword="null"/></exception>
-        public static Task<object> UpdateAsync(this IDatabaseRef firebaseRef, IDictionary<string, object> content)
+        public static Task<string> UpdateAsync(this IDatabaseRef firebaseRef, IDictionary<string, object> content)
         {
             if (content == null || content.Count == 0)
             {
@@ -17,6 +17,18 @@ namespace FirebaseCoreSDK.Firebase.Database
 
             var databaseRef = ((DatabaseRef) firebaseRef);
             return databaseRef.HttpClient.UpdatePathAsync(databaseRef.Path, content);
+        }
+
+        /// <exception cref="ArgumentNullException"><paramref name="content"/> is <see langword="null"/></exception>
+        public static Task<T> UpdateAsync<T>(this IDatabaseRef firebaseRef, IDictionary<string, object> content)
+        {
+            if (content == null || content.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            var databaseRef = ((DatabaseRef)firebaseRef);
+            return databaseRef.HttpClient.UpdatePathAsync<T>(databaseRef.Path, content);
         }
     }
 }

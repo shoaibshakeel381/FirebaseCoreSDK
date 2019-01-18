@@ -20,8 +20,10 @@
         Task<string> PushToPathAsync<T>(Uri path, T content);
         Task<string> PushToPathAsync<T>(string path, T content);
 
-        Task<object> UpdatePathAsync(string path, IDictionary<string, object> content);
-        Task<object> UpdatePathAsync(Uri path, IDictionary<string, object> content);
+        Task<string> UpdatePathAsync(string path, IDictionary<string, object> content);
+        Task<T> UpdatePathAsync<T>(string path, IDictionary<string, object> content);
+        Task<string> UpdatePathAsync(Uri path, IDictionary<string, object> content);
+        Task<T> UpdatePathAsync<T>(Uri path, IDictionary<string, object> content);
 
         Task DeletePathAsync(Uri path);
         Task DeletePathAsync(string path);

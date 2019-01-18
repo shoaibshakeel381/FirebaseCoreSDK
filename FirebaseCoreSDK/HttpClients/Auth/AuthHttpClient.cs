@@ -27,7 +27,7 @@
         private readonly PayloadGenerator _jwtCustomTokenPayload;
         private readonly JwtAuthPayloadGenerator _jwtPayload;
 
-        public AuthHttpClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration) : 
+        public AuthHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) : 
             base(credentials, configuration)
         {
             _jwtCustomTokenPayload = new CustomTokenPayloadGenerator(credentials, configuration);
@@ -69,7 +69,7 @@
 
             var urlEncodedPayload = new FormUrlEncodedContent(permissionPayload);
 
-
+            Configuration.Logger?.Info($"[{HttpMethod.Post}] {Configuration.GoogleOAuthTokenPath}");
             var response = await PostAsync(Configuration.GoogleOAuthTokenPath, urlEncodedPayload).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
 
@@ -78,6 +78,8 @@
                 throw new FirebaseHttpException("Authentication failed, empty response content from firebase server");
             }
             var strinRepresentation = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            Configuration.Logger?.Debug($"[RESPONSE] {strinRepresentation}");
+
             var serializationSettings = new JsonSerializerSettings { ContractResolver = new AccessTokenResolver() };
             var accessToken = JsonConvert.DeserializeObject<FirebaseAccessToken>(strinRepresentation, serializationSettings);
             if (accessToken == null)

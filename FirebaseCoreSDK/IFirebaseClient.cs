@@ -11,7 +11,7 @@
 
     public interface IFirebaseClient : IDisposable
     {
-        FirebaseConfiguration Configuration { get; }
+        FirebaseSDKConfiguration Configuration { get; }
 
         IFirebaseAuth Auth { get; }
 

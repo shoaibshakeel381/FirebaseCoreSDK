@@ -7,7 +7,7 @@
 
     using Configuration;
 
-    using HttpClients.CloudMessagign;
+    using HttpClients.CloudMessaging;
 
     using Models;
 
@@ -15,14 +15,14 @@
     {
         private readonly ICloudMessagingHttpClient _httpClient;
 
-        public FirebaseCloudMessaging(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public FirebaseCloudMessaging(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _httpClient = new CloudMessagingHttpClient(credentials, configuration);
         }
 
-        public async Task<FirebasePushEnvelopeMessage> SendCloudMessageAsync(FirebasePushEnvelope request)
+        public async Task<string> SendCloudMessageAsync(FirebasePushMessage request)
         {
-            request.Message.Name = null;
+            request.Name = null;
 
             // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
             return await _httpClient.SendCloudMessageAsync(request).ConfigureAwait(false);

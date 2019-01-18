@@ -20,8 +20,8 @@
 
     internal class DatabaseHttpClient : HttpClient, IDatabaseHttpClient
     {
-        public DatabaseHttpClient(IServiceAccountCredentials credentials, FirebaseConfiguration configuration) 
-            : base(credentials, configuration, new Uri($"https://{credentials.GetProjectId()}.{configuration.FirebaseHost}/", UriKind.Absolute))
+        public DatabaseHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) 
+            : base(credentials, configuration, new Uri(configuration.RealtimeDatabaseAuthority, UriKind.Absolute))
         {
             
         }
@@ -93,15 +93,31 @@
             return PushToPathAsync(new Uri(path, UriKind.Relative), content);
         }
 
-        public Task<object> UpdatePathAsync(string path, IDictionary<string, object> content)
+        public Task<string> UpdatePathAsync(string path, IDictionary<string, object> content)
         {
             return UpdatePathAsync(new Uri(path, UriKind.Relative), content);
         }
 
-        public async Task<object> UpdatePathAsync(Uri path, IDictionary<string, object> content)
+        public async Task<string> UpdatePathAsync(Uri path, IDictionary<string, object> content)
+        {
+            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
+            return await SendAsync(() => PreparePatchRequest(path, content)).ConfigureAwait(false);
+        }
+
+        public Task<T> UpdatePathAsync<T>(string path, IDictionary<string, object> content)
+        {
+            return UpdatePathAsync<T>(new Uri(path, UriKind.Relative), content);
+        }
+
+        public async Task<T> UpdatePathAsync<T>(Uri path, IDictionary<string, object> content)
         {
             var dataAsString = await SendAsync(() => PreparePatchRequest(path, content)).ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<object>(dataAsString);
+
+            var serializationOptions = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
         }
 
         public async Task DeletePathAsync(Uri path)
@@ -110,10 +126,9 @@
             await SendAsync(() => PrepareDeleteRequest(path)).ConfigureAwait(false);
         }
 
-        public async Task DeletePathAsync(string path)
+        public Task DeletePathAsync(string path)
         {
-            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
-            await DeleteAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(false);
+            return DeletePathAsync(new Uri(path, UriKind.Relative));
         }
 
         private HttpRequestMessage PrepareGetRequest(Uri path)

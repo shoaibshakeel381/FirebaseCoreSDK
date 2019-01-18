@@ -11,10 +11,10 @@
 
     internal class FirebaseAuth : IFirebaseAuth
     {
-        private readonly FirebaseConfiguration _configuration;
+        private readonly FirebaseSDKConfiguration _configuration;
         private readonly IAuthHttpClient _httpClient;
 
-        public FirebaseAuth(IServiceAccountCredentials credentials, FirebaseConfiguration configuration)
+        public FirebaseAuth(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
             _configuration = configuration;
             _httpClient = new AuthHttpClient(credentials, configuration);

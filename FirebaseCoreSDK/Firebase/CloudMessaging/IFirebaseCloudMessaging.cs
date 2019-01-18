@@ -7,6 +7,6 @@
 
     public interface IFirebaseCloudMessaging : IDisposable
     {
-        Task<FirebasePushEnvelopeMessage> SendCloudMessageAsync(FirebasePushEnvelope request);
+        Task<string> SendCloudMessageAsync(FirebasePushMessage request);
     }
 }
