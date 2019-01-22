@@ -72,6 +72,14 @@ await firebaseClient.Auth.AuthenticateAsync();
 var result = await firebaseClient.Database.Ref("users/330/events/EventKey2")
                 .GetAsync<UserHistory>();
 
+var queryBuilder = QueryBuilder.New()
+                .Shallow(true)
+                .StartAt("startvalu")
+                .OrderBy("asd")
+                .LimitToLast(1);
+
+var result1 = await client.Database.Ref("users/330/events/EventKey2").GetAsync<T>(queryBuilder);
+
 ```
 We can inject key into model by inheriting `UserHistory: KeyEntity`
 and instead of calling `.GetAsync<UserHistory>()` call `.GetWithKeyInjectedAsync<UserHistory>()`
