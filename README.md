@@ -68,7 +68,7 @@ class UserHistory {
 and can query via
 
 ```C#
-
+await firebaseClient.Auth.AuthenticateAsync();
 var result = await firebaseClient.Database.Ref("users/330/events/EventKey2")
                 .GetAsync<UserHistory>();
 
@@ -78,6 +78,7 @@ and instead of calling `.GetAsync<UserHistory>()` call `.GetWithKeyInjectedAsync
 like:
 
 ```C#
+await firebaseClient.Auth.AuthenticateAsync();
 var result = await firebaseClient.Database.Ref("users/330/eventsEventKey2")
                 .GetWithKeyInjectedAsync<UserHistory>();
 ```
