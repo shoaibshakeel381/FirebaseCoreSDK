@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.8</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <PackageId>FirebaseCoreSDK</PackageId>
     <Title>Firebase Core SDK</Title>
     <Authors>Shoaib Shakeel</Authors>
@@ -19,6 +19,7 @@ But it has improved code organization and so its usage is similar to older nuget
     <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
     <IncludeSource>false</IncludeSource>
     <PackageTags>firebase .net core</PackageTags>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

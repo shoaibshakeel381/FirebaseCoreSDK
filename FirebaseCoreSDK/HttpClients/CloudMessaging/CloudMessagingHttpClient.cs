@@ -25,20 +25,20 @@
             
         }
 
-        public async Task<string> SendCloudMessageAsync(FirebasePushMessage request)
+        public async Task<PushMessageResponse> SendCloudMessageAsync(FirebasePushMessageEnvelope request)
         {
-            var messageUri = new Uri("/v1/projects/{Credentials.GetProjectId()}/messages:send");
+            var messageUri = new Uri($"/v1/projects/{Credentials.GetProjectId()}/messages:send");
             var dataAsString = await SendAsync(() => BuildRequestMessage(messageUri, request)).ConfigureAwait(false);
-            return dataAsString;
-            //var serializationOptions = new JsonSerializerSettings
-            //{
-            //    ContractResolver = new CamelCasePropertyNamesContractResolver()
-            //};
-            //return JsonConvert.DeserializeObject<FirebasePushMessage>(dataAsString, serializationOptions);
+            
+            var serializationOptions = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            return JsonConvert.DeserializeObject<PushMessageResponse>(dataAsString, serializationOptions);
 
         }
 
-        private HttpRequestMessage BuildRequestMessage(Uri path, FirebasePushMessage content)
+        private HttpRequestMessage BuildRequestMessage(Uri path, FirebasePushMessageEnvelope content)
         {
             var serializationOptions = new JsonSerializerSettings
             {
@@ -47,7 +47,7 @@
 
             var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
 
             var message = new HttpRequestMessage
             {

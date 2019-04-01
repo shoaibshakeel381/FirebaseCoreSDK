@@ -6,6 +6,6 @@
 
     internal interface ICloudMessagingHttpClient : IHttpClient
     {
-        Task<string> SendCloudMessageAsync(FirebasePushMessage request);
+        Task<PushMessageResponse> SendCloudMessageAsync(FirebasePushMessageEnvelope request);
     }
 }

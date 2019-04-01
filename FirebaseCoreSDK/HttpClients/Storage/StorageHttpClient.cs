@@ -36,7 +36,7 @@
 
         private HttpRequestMessage PrepareStorageRequest(Uri path, HttpMethod method)
         {
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
 
             var message = new HttpRequestMessage
             {

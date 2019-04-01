@@ -77,11 +77,11 @@
             {
                 throw new FirebaseHttpException("Authentication failed, empty response content from firebase server");
             }
-            var strinRepresentation = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            Configuration.Logger?.Debug($"[RESPONSE] {strinRepresentation}");
+            var representation = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            Configuration.Logger?.Debug($"[RESPONSE] {representation}");
 
             var serializationSettings = new JsonSerializerSettings { ContractResolver = new AccessTokenResolver() };
-            var accessToken = JsonConvert.DeserializeObject<FirebaseAccessToken>(strinRepresentation, serializationSettings);
+            var accessToken = JsonConvert.DeserializeObject<FirebaseAccessToken>(representation, serializationSettings);
             if (accessToken == null)
             {
                 throw new FirebaseHttpException("Authentication failed, unsupported content type was returned from firebase server");

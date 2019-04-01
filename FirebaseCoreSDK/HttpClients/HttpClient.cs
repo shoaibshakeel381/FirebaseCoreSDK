@@ -60,7 +60,7 @@
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Configuration.AccessToken?.AccessToken);
         }
 
-        protected Uri GetFullAbsaluteUrl(Uri uri)
+        protected Uri GetFullAbsoluteUrl(Uri uri)
         {
             if (Authority == null && !uri.IsAbsoluteUri)
             {

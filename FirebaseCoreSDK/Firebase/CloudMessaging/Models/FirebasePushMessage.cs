@@ -5,6 +5,15 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    public class FirebasePushMessageEnvelope
+    {
+        [JsonProperty("validate_only")]
+        public bool DryRun { get; set; }
+
+        [JsonProperty("message")]
+        public FirebasePushMessage Message { get; set; }
+    }
+
     public class FirebasePushMessage
     {
         [JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
@@ -26,7 +35,7 @@
         public Notification Notification { get; set; }
 
         [JsonProperty(PropertyName = "android", NullValueHandling = NullValueHandling.Ignore)]
-        public AndriodPayload Android { get; set; }
+        public AndroidPayload Android { get; set; }
 
         [JsonProperty(PropertyName = "webpush", NullValueHandling = NullValueHandling.Ignore)]
         public WebPushPayload WebPush { get; set; }
@@ -44,7 +53,7 @@
         public string Body { get; set; }
     }
 
-    public class AndriodPayload
+    public class AndroidPayload
     {
         [JsonProperty(PropertyName = "collapse_key", NullValueHandling = NullValueHandling.Ignore)]
         public string CollapseKey { get; set; }

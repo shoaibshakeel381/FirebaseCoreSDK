@@ -20,12 +20,16 @@
             _httpClient = new CloudMessagingHttpClient(credentials, configuration);
         }
 
-        public async Task<string> SendCloudMessageAsync(FirebasePushMessage request)
+        public async Task<PushMessageResponse> SendCloudMessageAsync(FirebasePushMessage request, bool dryRun = false)
         {
             request.Name = null;
 
-            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
-            return await _httpClient.SendCloudMessageAsync(request).ConfigureAwait(false);
+            var message = new FirebasePushMessageEnvelope
+            {
+                DryRun = dryRun,
+                Message = request
+            };
+            return await _httpClient.SendCloudMessageAsync(message).ConfigureAwait(false);
         }
 
         #region Dispose Methods

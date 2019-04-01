@@ -133,7 +133,7 @@
 
         private HttpRequestMessage PrepareGetRequest(Uri path)
         {
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
             var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
@@ -168,7 +168,7 @@
 
             var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
 
             var message = new HttpRequestMessage
             {
@@ -183,7 +183,7 @@
 
         private HttpRequestMessage PrepareDeleteRequest(Uri path)
         {
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
             var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
