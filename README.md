@@ -21,6 +21,16 @@ var configuration = new FirebaseSDKConfiguration {
 
 var firebaseClient = new FirebaseClient(configuration);
 ```
+
+* Json string
+``` C#
+var configuration = new FirebaseSDKConfiguration {
+    Credentials = new JsonServiceAccountCredentials("your-json-string", false)
+};
+
+var firebaseClient = new FirebaseClient(configuration);
+```
+
 * P12 file
 ``` C#
 var configuration = new FirebaseSDKConfiguration {
