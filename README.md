@@ -6,6 +6,7 @@ But it has improved code organization with additional fixes and enhancements. It
 - Firebase Realtime Database (Basic Crud, no Offline or Streaming support)
 - Firebase Storage
 - Authentication (Generate Custom Token, no user management)
+- Logging (You can provide logger in `FirebaseSDKConfiguration`)
 
 ## Initialization
 
