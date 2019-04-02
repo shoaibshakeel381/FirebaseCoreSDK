@@ -1,4 +1,6 @@
-﻿namespace FirebaseCoreSDK.Logging
+﻿using System.Net.Http;
+
+namespace FirebaseCoreSDK.Logging
 {
     using System;
 
@@ -40,6 +42,11 @@
         public void Error(string formatString, params object[] args)
         {
             Console.WriteLine(Format("Error", formatString, args));
+        }
+
+        public void OutgoingRequest(Uri url, HttpMethod method, string body, object response, int? resultCode, Exception e)
+        {
+            // Log nothing
         }
 
         private static string Format(string level, string formatString, params object[] args)

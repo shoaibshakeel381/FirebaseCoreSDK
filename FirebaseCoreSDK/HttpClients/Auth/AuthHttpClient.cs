@@ -71,6 +71,7 @@
 
             Configuration.Logger?.Info($"[{HttpMethod.Post}] {Configuration.GoogleOAuthTokenPath}");
             var response = await PostAsync(Configuration.GoogleOAuthTokenPath, urlEncodedPayload).ConfigureAwait(false);
+            await response.LogRequest(Configuration.Logger);
             await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
 
             if (response.Content == null)

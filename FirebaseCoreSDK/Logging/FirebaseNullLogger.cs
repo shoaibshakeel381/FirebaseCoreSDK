@@ -1,4 +1,7 @@
-﻿namespace FirebaseCoreSDK.Logging
+﻿using System;
+using System.Net.Http;
+
+namespace FirebaseCoreSDK.Logging
 {
     /// <summary>
     /// FirebaseNullLogger which does not log.
@@ -26,6 +29,11 @@
 
         /// <see cref="IFirebaseLogger.Error"/>
         public void Error(string formatString, params object[] args)
+        {
+            // Log nothing
+        }
+
+        public void OutgoingRequest(Uri url, HttpMethod method, string body, object response, int? resultCode, Exception e)
         {
             // Log nothing
         }

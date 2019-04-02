@@ -40,6 +40,7 @@
             Configuration.Logger?.Info($"[{request.Method}] {request.RequestUri.AbsoluteUri}");
 
             var response = await SendAsync(request).ConfigureAwait(false);
+            await response.LogRequest(Configuration.Logger);
             await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
 
             if (response.Content == null)
