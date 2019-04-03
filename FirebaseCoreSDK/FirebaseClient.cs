@@ -1,37 +1,29 @@
 ﻿namespace FirebaseCoreSDK
 {
+    #region Namespace Imports
+
     using System;
 
-    using Configuration;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Firebase.Auth;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.Firebase.CloudMessaging;
+    using FirebaseCoreSDK.Firebase.Database;
+    using FirebaseCoreSDK.Firebase.Storage;
 
-    using Firebase.Auth;
-    using Firebase.Auth.ServiceAccounts;
-    using Firebase.CloudMessaging;
-    using Firebase.Database;
-    using Firebase.Storage;
+    #endregion
+
 
     public sealed class FirebaseClient : IFirebaseClient
     {
-        public FirebaseSDKConfiguration Configuration { get; }
-        public IFirebaseAuth Auth { get; private set; }
-        public IFirebaseDatabase Database { get; private set; }
-        public IFirebaseCloudMessaging CloudMessaging { get; private set; }
-        public IFirebaseStorage Storage { get; private set; }
+        public FirebaseClient(FirebaseSDKConfiguration configuration)
+            : this(configuration.Credentials, configuration) {}
 
-        public FirebaseClient(FirebaseSDKConfiguration configuration) : this(configuration.Credentials, configuration)
-        {
-            
-        }
+        internal FirebaseClient(IServiceAccountCredentials credentials)
+            : this(credentials, new FirebaseSDKConfiguration()) {}
 
-        internal FirebaseClient(IServiceAccountCredentials credentials) :this(credentials, new FirebaseSDKConfiguration())
-        {
-
-        }
-
-        internal FirebaseClient(IServiceAccountCredentials credentials, FirebaseServiceAccess requestedAccess) : this(credentials, new FirebaseSDKConfiguration(requestedAccess))
-        {
-            
-        }
+        internal FirebaseClient(IServiceAccountCredentials credentials, FirebaseServiceAccess requestedAccess)
+            : this(credentials, new FirebaseSDKConfiguration(requestedAccess)) {}
 
         internal FirebaseClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {
@@ -40,25 +32,20 @@
             Initialize(credentials);
         }
 
-        private void Initialize(IServiceAccountCredentials credentials)
-        {
-            var creds = credentials ?? throw new ArgumentNullException(nameof(credentials));
-            Auth = new FirebaseAuth(creds, Configuration);
+        ~FirebaseClient() => Dispose(false);
 
-            if (FirebaseServiceAccess.Database == (Configuration.RequestedAccess & FirebaseServiceAccess.Database))
-                Database = new FirebaseDatabase(creds, Configuration);
+        public IFirebaseAuth Auth { get; private set; }
+        public IFirebaseCloudMessaging CloudMessaging { get; private set; }
+        public FirebaseSDKConfiguration Configuration { get; }
+        public IFirebaseDatabase Database { get; private set; }
+        public IFirebaseStorage Storage { get; private set; }
 
-            if (FirebaseServiceAccess.Storage == (Configuration.RequestedAccess & FirebaseServiceAccess.Storage))
-                Storage = new FirebaseStorage(creds, Configuration);
-
-            if (FirebaseServiceAccess.CloudMessaging == (Configuration.RequestedAccess & FirebaseServiceAccess.CloudMessaging))
-                CloudMessaging = new FirebaseCloudMessaging(creds, Configuration);
-        }
-
-        #region IDisposable Methods
         public void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
             Auth.Dispose();
             Database?.Dispose();
@@ -72,10 +59,25 @@
             GC.SuppressFinalize(this);
         }
 
-        ~FirebaseClient()
+        private void Initialize(IServiceAccountCredentials credentials)
         {
-            Dispose(false);
+            var creds = credentials ?? throw new ArgumentNullException(nameof(credentials));
+            Auth = new FirebaseAuth(creds, Configuration);
+
+            if (FirebaseServiceAccess.Database == (Configuration.RequestedAccess & FirebaseServiceAccess.Database))
+            {
+                Database = new FirebaseDatabase(creds, Configuration);
+            }
+
+            if (FirebaseServiceAccess.Storage == (Configuration.RequestedAccess & FirebaseServiceAccess.Storage))
+            {
+                Storage = new FirebaseStorage(creds, Configuration);
+            }
+
+            if (FirebaseServiceAccess.CloudMessaging == (Configuration.RequestedAccess & FirebaseServiceAccess.CloudMessaging))
+            {
+                CloudMessaging = new FirebaseCloudMessaging(creds, Configuration);
+            }
         }
-        #endregion
     }
 }

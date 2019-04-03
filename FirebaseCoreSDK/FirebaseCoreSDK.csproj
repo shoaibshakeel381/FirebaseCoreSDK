@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.1</PackageVersion>
+    <PackageVersion>1.1.2-a</PackageVersion>
     <PackageId>FirebaseCoreSDK</PackageId>
     <Title>Firebase Core SDK</Title>
     <Authors>Shoaib Shakeel</Authors>
@@ -14,12 +14,12 @@ But it has improved code organization and so its usage is similar to older nuget
 - Firebase Storage
 - Authentication (Generate Custom Token, no user management)</PackageDescription>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</PackageProjectUrl>
     <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
     <IncludeSource>false</IncludeSource>
     <PackageTags>firebase .net core</PackageTags>
-    <Version>1.1.1</Version>
+    <Version>1.1.2-a</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

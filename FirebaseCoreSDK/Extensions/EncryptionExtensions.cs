@@ -1,9 +1,13 @@
-﻿
-namespace FirebaseCoreSDK.Extensions
+﻿namespace FirebaseCoreSDK.Extensions
 {
+    #region Namespace Imports
+
     using System.Security.Cryptography;
 
     using Org.BouncyCastle.Crypto.Parameters;
+
+    #endregion
+
 
     public static class EncryptionExtensions
     {

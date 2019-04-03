@@ -1,14 +1,19 @@
 ﻿namespace FirebaseCoreSDK.Firebase.CloudMessaging
 {
+    #region Namespace Imports
+
     using System;
     using System.Threading.Tasks;
 
-    using Models;
+    using FirebaseCoreSDK.Firebase.CloudMessaging.Models;
+
+    #endregion
+
 
     public interface IFirebaseCloudMessaging : IDisposable
     {
         /// <summary>
-        ///  Send Push Notifications
+        ///     Send Push Notifications
         /// </summary>
         /// <param name="request"></param>
         /// <param name="dryRun">Only test the push message, don't actually send it</param>

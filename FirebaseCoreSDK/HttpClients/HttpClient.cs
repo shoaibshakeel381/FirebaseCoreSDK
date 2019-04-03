@@ -1,25 +1,27 @@
 ﻿namespace FirebaseCoreSDK.HttpClients
 {
+    #region Namespace Imports
+
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
-    using Configuration;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Extensions;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
 
-    using Extensions;
+    #endregion
 
-    using Firebase.Auth.ServiceAccounts;
 
     internal abstract class HttpClient : System.Net.Http.HttpClient, IHttpClient
     {
-        protected readonly IServiceAccountCredentials Credentials;
-        protected readonly FirebaseSDKConfiguration Configuration;
         protected readonly Uri Authority;
+        protected readonly FirebaseSDKConfiguration Configuration;
+        protected readonly IServiceAccountCredentials Credentials;
 
-        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) : this(credentials, configuration, null)
-        {
-        }
+        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
+            : this(credentials, configuration, null) {}
 
         protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration, Uri authority)
         {
@@ -28,28 +30,7 @@
             Authority = authority;
         }
 
-        public Uri GetAuthority()
-        {
-            return Authority;
-        }
-
-        protected async Task<string> SendAsync(Func<HttpRequestMessage> requestMessage)
-        {
-            var request = requestMessage();
-
-            Configuration.Logger?.Info($"[{request.Method}] {request.RequestUri.AbsoluteUri}");
-
-            var response = await SendAsync(request).ConfigureAwait(false);
-            await response.LogRequest(Configuration.Logger);
-            await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
-
-            if (response.Content == null)
-                return null;
-
-            var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            Configuration.Logger?.Debug($"[RESPONSE] {dataAsString}");
-            return dataAsString;
-        }
+        public Uri GetAuthority() => Authority;
 
         protected void AddAuthHeaders(HttpRequestMessage request)
         {
@@ -74,6 +55,26 @@
             }
 
             return Authority == null ? uri : Authority.Append(uri);
+        }
+
+        protected async Task<string> SendAsync(Func<HttpRequestMessage> requestMessage)
+        {
+            var request = requestMessage();
+
+            Configuration.Logger?.Info($"[{request.Method}] {request.RequestUri.AbsoluteUri}");
+
+            var response = await SendAsync(request).ConfigureAwait(false);
+            await response.LogRequest(Configuration.Logger);
+            await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
+
+            if (response.Content == null)
+            {
+                return null;
+            }
+
+            var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            Configuration.Logger?.Debug($"[RESPONSE] {dataAsString}");
+            return dataAsString;
         }
     }
 }

@@ -1,10 +1,15 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Auth.Encryption
 {
+    #region Namespace Imports
+
     using System;
     using System.Collections.Generic;
     using System.Security.Cryptography;
 
     using Jose;
+
+    #endregion
+
 
     public class JoseJwtProvider : IJwtProvider
     {
@@ -19,6 +24,7 @@
             {
                 throw new ArgumentNullException(nameof(privateKey));
             }
+
             return JWT.Encode(payload, privateKey, JwsAlgorithm.RS256);
         }
     }

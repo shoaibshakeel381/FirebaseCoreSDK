@@ -1,34 +1,35 @@
-﻿using System;
-using System.Net.Http;
-
-namespace FirebaseCoreSDK.Logging
+﻿namespace FirebaseCoreSDK.Logging
 {
+    #region Namespace Imports
+
+    using System;
+    using System.Net.Http;
+
+    #endregion
+
+
     /// <summary>
-    /// FirebaseNullLogger which does not log.
+    ///     FirebaseNullLogger which does not log.
     /// </summary>
     /// <seealso cref="FirebaseNullLogger" />
     public class FirebaseNullLogger : IFirebaseLogger
     {
-        /// <see cref="IFirebaseLogger.Debug"/>
+        public LogLevel LogLevel { get; set; } = LogLevel.None;
+
+        /// <see cref="IFirebaseLogger.Debug" />
         public void Debug(string formatString, params object[] args)
         {
             // Log nothing
         }
 
-        /// <see cref="IFirebaseLogger.Info"/>
-        public void Info(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
-
-        /// <see cref="IFirebaseLogger.Warn"/>
-        public void Warn(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
-
-        /// <see cref="IFirebaseLogger.Error"/>
+        /// <see cref="IFirebaseLogger.Error" />
         public void Error(string formatString, params object[] args)
+        {
+            // Log nothing
+        }
+
+        /// <see cref="IFirebaseLogger.Info" />
+        public void Info(string formatString, params object[] args)
         {
             // Log nothing
         }
@@ -38,6 +39,10 @@ namespace FirebaseCoreSDK.Logging
             // Log nothing
         }
 
-        public LogLevel LogLevel { get; set; } = LogLevel.None;
+        /// <see cref="IFirebaseLogger.Warn" />
+        public void Warn(string formatString, params object[] args)
+        {
+            // Log nothing
+        }
     }
 }

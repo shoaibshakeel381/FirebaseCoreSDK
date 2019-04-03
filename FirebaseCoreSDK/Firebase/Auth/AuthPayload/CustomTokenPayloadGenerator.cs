@@ -1,18 +1,21 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Auth.AuthPayload
 {
+    #region Namespace Imports
+
     using System;
     using System.Collections.Generic;
 
-    using Configuration;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Extensions;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
 
-    using Extensions;
+    #endregion
 
-    using ServiceAccounts;
 
     public class CustomTokenPayloadGenerator : PayloadGenerator
     {
-        private readonly IServiceAccountCredentials _creadentials;
         private readonly FirebaseSDKConfiguration _configuration;
+        private readonly IServiceAccountCredentials _creadentials;
 
         public CustomTokenPayloadGenerator(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
         {

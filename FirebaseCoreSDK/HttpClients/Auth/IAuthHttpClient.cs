@@ -1,13 +1,17 @@
 ﻿namespace FirebaseCoreSDK.HttpClients.Auth
 {
+    #region Namespace Imports
+
     using System.Threading.Tasks;
 
-    using Firebase.Auth.Models;
+    using FirebaseCoreSDK.Firebase.Auth.Models;
+
+    #endregion
+
 
     internal interface IAuthHttpClient : IHttpClient
     {
-        string CreateCustomToken(string userId);
-
         Task<FirebaseAccessToken> AuthenticateAsync();
+        string CreateCustomToken(string userId);
     }
 }

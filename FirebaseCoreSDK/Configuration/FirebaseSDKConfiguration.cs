@@ -1,21 +1,25 @@
 ﻿namespace FirebaseCoreSDK.Configuration
 {
+    #region Namespace Imports
+
     using System;
     using System.Collections.Generic;
 
-    using Firebase.Auth.Encryption;
-    using Firebase.Auth.Models;
-    using Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.Firebase.Auth.Encryption;
+    using FirebaseCoreSDK.Firebase.Auth.Models;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.Logging;
 
-    using Logging;
+    #endregion
+
 
     // ReSharper disable once InconsistentNaming
     public class FirebaseSDKConfiguration
     {
-        public FirebaseSDKConfiguration(): this(FirebaseServiceAccess.Full)
-        {
+        private string _realtimeDatabaseAuthority;
 
-        }
+        public FirebaseSDKConfiguration()
+            : this(FirebaseServiceAccess.Full) {}
 
         public FirebaseSDKConfiguration(FirebaseServiceAccess requestedAccess)
         {
@@ -23,7 +27,63 @@
             AccessToken = new FirebaseAccessToken();
         }
 
-        internal FirebaseServiceAccess RequestedAccess { get; }
+        /// <summary>
+        ///     TTL for one authentication session
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        public TimeSpan AccessTokenTTL { get; set; } = new TimeSpan(0, 4, 0);
+
+        /// <summary>
+        ///     Cloud Messaging service url
+        /// </summary>
+        public string CloudMessagingAuthority { get; set; } = "https://fcm.googleapis.com/";
+
+        /// <summary>
+        ///     Service account credentials.<br />
+        /// </summary>
+        public IServiceAccountCredentials Credentials { get; set; }
+
+        public string CustomTokenPath { get; set; } = "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit";
+
+        /// <summary>
+        ///     TTL for custom token
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        public TimeSpan CustomTokenTTL { get; set; } = new TimeSpan(0, 60, 0);
+
+        /// <summary>
+        ///     This is just the host name. Not actual URL.
+        /// </summary>
+        public string FirebaseHost { get; set; } = "firebaseio.com";
+
+        /// <summary>
+        ///     Google OAuth URL
+        /// </summary>
+        public string GoogleOAuthTokenPath { get; set; } = "https://www.googleapis.com/oauth2/v4/token";
+
+        /// <summary>
+        ///     Custom Logger
+        /// </summary>
+        public IFirebaseLogger Logger { get; set; } = new FirebaseNullLogger();
+
+        /// <summary>
+        ///     Realtime Database service url
+        /// </summary>
+        public string RealtimeDatabaseAuthority
+        {
+            get => string.IsNullOrEmpty(_realtimeDatabaseAuthority) ? $"https://{Credentials.GetProjectId()}.{FirebaseHost}/" : _realtimeDatabaseAuthority;
+            set => _realtimeDatabaseAuthority = value;
+        }
+
+        /// <summary>
+        ///     Storage service url
+        /// </summary>
+        public string StorageBaseAuthority { get; set; } = "https://storage.googleapis.com";
+
+        /// <summary>
+        ///     Storage service url
+        /// </summary>
+        public string StorageBaseAuthority2 { get; set; } = " https://www.googleapis.com/storage";
 
         internal FirebaseAccessToken AccessToken { get; set; }
 
@@ -53,74 +113,18 @@
             }
         }
 
+        /// <summary>
+        ///     Automatically authenticate all firebase API requests
+        /// </summary>
+        internal bool AutoAuthenticate => throw new NotImplementedException();
+
         internal string GoogleScopeDelimiter => " ";
 
         internal IJwtProvider JwtTokenProvider => new JoseJwtProvider();
 
-        /// <summary>
-        /// TTL for one authentication session
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public TimeSpan AccessTokenTTL { get; set; } = new TimeSpan(0, 4, 0);
-
-        /// <summary>
-        /// TTL for custom token
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public TimeSpan CustomTokenTTL { get; set; } = new TimeSpan(0, 60, 0);
-
-        /// <summary>
-        /// Automatically authenticate all firebase API requests
-        /// </summary>
-        internal bool AutoAuthenticate => throw new NotImplementedException();
-
-        /// <summary>
-        /// Service account credentials.<br/>
-        /// </summary>
-        public IServiceAccountCredentials Credentials { get; set; }
-
-        /// <summary>
-        /// Custom Logger
-        /// </summary>
-        public IFirebaseLogger Logger { get; set; } = new FirebaseNullLogger();
-
-        /// <summary>
-        /// This is just the host name. Not actual URL.
-        /// </summary>
-        public string FirebaseHost { get; set; } = "firebaseio.com";
-
-        /// <summary>
-        /// Google OAuth URL
-        /// </summary>
-        public string GoogleOAuthTokenPath { get; set; } = "https://www.googleapis.com/oauth2/v4/token";
-
-        public string CustomTokenPath { get; set; } = "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit";
-
-        /// <summary>
-        /// Realtime Database service url
-        /// </summary>
-        public string RealtimeDatabaseAuthority
-        {
-            get => string.IsNullOrEmpty(_realtimeDatabaseAuthority) ? $"https://{Credentials.GetProjectId()}.{FirebaseHost}/" : _realtimeDatabaseAuthority;
-            set => _realtimeDatabaseAuthority = value;
-        }
-        private string _realtimeDatabaseAuthority;
-
-        /// <summary>
-        /// Cloud Messaging service url
-        /// </summary>
-        public string CloudMessagingAuthority { get; set; } = "https://fcm.googleapis.com/";
-
-        /// <summary>
-        /// Storage service url
-        /// </summary>
-        public string StorageBaseAuthority { get; set; } = "https://storage.googleapis.com";
-
-        /// <summary>
-        /// Storage service url
-        /// </summary>
-        public string StorageBaseAuthority2 { get; set; } = " https://www.googleapis.com/storage";
+        internal FirebaseServiceAccess RequestedAccess { get; }
     }
+
 
     [Flags]
     public enum FirebaseServiceAccess

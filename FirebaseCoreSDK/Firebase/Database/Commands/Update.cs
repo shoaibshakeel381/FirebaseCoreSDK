@@ -1,13 +1,19 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace FirebaseCoreSDK.Firebase.Database
 {
+    #region Namespace Imports
+
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    #endregion
+
+
     public static partial class CommandExtensions
     {
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is <see langword="null"/></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="content" /> is <see langword="null" /></exception>
         public static Task<string> UpdateAsync(this IDatabaseRef firebaseRef, IDictionary<string, object> content)
         {
             if (content == null || content.Count == 0)
@@ -15,11 +21,11 @@ namespace FirebaseCoreSDK.Firebase.Database
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var databaseRef = ((DatabaseRef) firebaseRef);
+            var databaseRef = (DatabaseRef)firebaseRef;
             return databaseRef.HttpClient.UpdatePathAsync(databaseRef.Path, content);
         }
 
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is <see langword="null"/></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="content" /> is <see langword="null" /></exception>
         public static Task<T> UpdateAsync<T>(this IDatabaseRef firebaseRef, IDictionary<string, object> content)
         {
             if (content == null || content.Count == 0)
@@ -27,7 +33,7 @@ namespace FirebaseCoreSDK.Firebase.Database
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var databaseRef = ((DatabaseRef)firebaseRef);
+            var databaseRef = (DatabaseRef)firebaseRef;
             return databaseRef.HttpClient.UpdatePathAsync<T>(databaseRef.Path, content);
         }
     }

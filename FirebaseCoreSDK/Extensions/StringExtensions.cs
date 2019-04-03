@@ -1,5 +1,4 @@
-﻿
-namespace FirebaseCoreSDK.Extensions
+﻿namespace FirebaseCoreSDK.Extensions
 {
     public static class StringExtensions
     {
@@ -9,6 +8,7 @@ namespace FirebaseCoreSDK.Extensions
             {
                 return "";
             }
+
             var trimedCharacters = new[] { '/', '\\' };
             return str.Trim(trimedCharacters);
         }

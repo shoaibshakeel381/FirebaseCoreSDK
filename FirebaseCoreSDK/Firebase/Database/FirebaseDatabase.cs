@@ -1,12 +1,15 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Database
 {
+    #region Namespace Imports
+
     using System;
 
-    using Auth.ServiceAccounts;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.HttpClients.Database;
 
-    using Configuration;
+    #endregion
 
-    using HttpClients.Database;
 
     internal class FirebaseDatabase : IFirebaseDatabase
     {
@@ -19,30 +22,24 @@
             _httpClient = new DatabaseHttpClient(credentials, configuration);
         }
 
-        public IDatabaseRef Ref(string path)
-        {
-            return new DatabaseRef(_httpClient, _configuration, path);
-        }
+        ~FirebaseDatabase() => Dispose(false);
 
-        #region Dispose Methods
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        public IDatabaseRef Ref(string path) => new DatabaseRef(_httpClient, _configuration, path);
+
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
             _httpClient?.Dispose();
-
         }
-
-        ~FirebaseDatabase()
-        {
-            Dispose(false);
-        }
-        #endregion
     }
 }

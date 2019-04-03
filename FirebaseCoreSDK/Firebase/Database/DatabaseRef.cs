@@ -1,18 +1,19 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Database
 {
+    #region Namespace Imports
+
     using System;
 
-    using Configuration;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Extensions;
+    using FirebaseCoreSDK.HttpClients.Database;
 
-    using Extensions;
+    #endregion
 
-    using HttpClients.Database;
 
     public class DatabaseRef : IDatabaseRef
     {
         internal readonly IDatabaseHttpClient HttpClient;
-
-        public string Path { get; set; }
 
         public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath)
         {
@@ -25,5 +26,7 @@
 
             HttpClient = httpClient;
         }
+
+        public string Path { get; set; }
     }
 }

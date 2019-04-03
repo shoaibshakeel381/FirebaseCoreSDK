@@ -1,24 +1,28 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Storage
 {
+    #region Namespace Imports
+
     using System;
     using System.Threading.Tasks;
 
-    using Models;
+    using FirebaseCoreSDK.Firebase.Storage.Models;
+
+    #endregion
+
 
     public interface IFirebaseStorage : IDisposable
     {
+        Task<ObjectMetadata> GetObjectMetaDataAsync(string path);
         string GetPublicUrl(string path);
 
         string GetSignedUrl(SigningOption options);
 
-        Task RemoveObjectAsync(string path);
-
-        Task<(bool Result, Exception ex)> TryRemoveObjectAsync(string path);
-
-        Task<ObjectMetadata> GetObjectMetaDataAsync(string path);
-
         Task MoveObjectAsync(string originPath, string destinationPath);
 
+        Task RemoveObjectAsync(string path);
+
         Task<(bool Result, Exception ex)> TryMoveObjectAsync(string originPat, string destinationPath);
+
+        Task<(bool Result, Exception ex)> TryRemoveObjectAsync(string path);
     }
 }

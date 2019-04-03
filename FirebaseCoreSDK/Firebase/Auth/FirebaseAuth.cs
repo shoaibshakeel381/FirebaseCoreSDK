@@ -1,13 +1,16 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Auth
 {
+    #region Namespace Imports
+
     using System;
     using System.Threading.Tasks;
 
-    using Configuration;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.HttpClients.Auth;
 
-    using HttpClients.Auth;
+    #endregion
 
-    using ServiceAccounts;
 
     internal class FirebaseAuth : IFirebaseAuth
     {
@@ -20,16 +23,15 @@
             _httpClient = new AuthHttpClient(credentials, configuration);
         }
 
-        public string CreateCustomToken(string userId)
-        {
-            return _httpClient.CreateCustomToken(userId);
-        }
+        ~FirebaseAuth() => Dispose(false);
 
         public async Task AuthenticateAsync()
         {
             var result = await _httpClient.AuthenticateAsync().ConfigureAwait(false);
             _configuration.AccessToken = result;
         }
+
+        public string CreateCustomToken(string userId) => _httpClient.CreateCustomToken(userId);
 
         public void Dispose()
         {
@@ -39,15 +41,12 @@
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
             _httpClient?.Dispose();
-
-        }
-
-        ~FirebaseAuth()
-        {
-            Dispose(false);
         }
     }
 }

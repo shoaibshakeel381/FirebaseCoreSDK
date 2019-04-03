@@ -1,7 +1,11 @@
-﻿
-namespace FirebaseCoreSDK.Extensions
+﻿namespace FirebaseCoreSDK.Extensions
 {
+    #region Namespace Imports
+
     using System;
+
+    #endregion
+
 
     public static class DateExtensions
     {
@@ -16,7 +20,7 @@ namespace FirebaseCoreSDK.Extensions
                 throw new ArgumentOutOfRangeException(nameof(value), "value is beyond unix epoch");
             }
 
-            TimeSpan diff = value - UnixEpoch;
+            var diff = value - UnixEpoch;
             return (long)Math.Floor(diff.TotalSeconds);
         }
     }

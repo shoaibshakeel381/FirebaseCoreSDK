@@ -1,36 +1,34 @@
 ﻿namespace FirebaseCoreSDK.HttpClients.Storage
 {
+    #region Namespace Imports
+
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    using Configuration;
-
-    using Extensions;
-
-    using Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.Configuration;
+    using FirebaseCoreSDK.Extensions;
+    using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
+    using HttpClient = FirebaseCoreSDK.HttpClients.HttpClient;
+
     // ReSharper disable once RedundantNameQualifier
-    using HttpClient = HttpClients.HttpClient;
+
+    #endregion
+
 
     internal class StorageHttpClient : HttpClient, IStorageHttpClient
     {
-        public StorageHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration) 
-            : base(credentials, configuration, new Uri($"{configuration.StorageBaseAuthority.TrimSlashes()}", UriKind.Absolute))
-        {
-            
-        }
+        public StorageHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
+            : base(credentials, configuration, new Uri($"{configuration.StorageBaseAuthority.TrimSlashes()}", UriKind.Absolute)) {}
 
         public async Task<T> SendStorageRequestAsync<T>(Uri path, HttpMethod method)
         {
             var dataAsString = await SendAsync(() => PrepareStorageRequest(path, method)).ConfigureAwait(false);
-            var serializationOptions = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
         }
 
@@ -38,11 +36,7 @@
         {
             var fullUri = GetFullAbsoluteUrl(path);
 
-            var message = new HttpRequestMessage
-            {
-                RequestUri = fullUri,
-                Method = method
-            };
+            var message = new HttpRequestMessage { RequestUri = fullUri, Method = method };
             AddAuthHeaders(message);
             return message;
         }

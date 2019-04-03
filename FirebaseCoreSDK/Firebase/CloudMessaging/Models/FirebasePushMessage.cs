@@ -1,148 +1,71 @@
 ﻿namespace FirebaseCoreSDK.Firebase.CloudMessaging.Models
 {
+    #region Namespace Imports
+
     using System.Collections.Generic;
 
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
-    public class FirebasePushMessageEnvelope
-    {
-        [JsonProperty("validate_only")]
-        public bool DryRun { get; set; }
+    #endregion
 
-        [JsonProperty("message")]
-        public FirebasePushMessage Message { get; set; }
-    }
 
+    /// <summary>
+    ///     Represents a message that can be sent via Firebase Cloud Messaging (FCM). Contains payload
+    ///     information as well as the recipient information. The recipient information must be
+    ///     specified by setting exactly one of the <see cref="Token" />, <see cref="Topic" /> or
+    ///     <see cref="Condition" /> fields.
+    /// </summary>
     public class FirebasePushMessage
     {
-        [JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "token", NullValueHandling = NullValueHandling.Ignore)]
-        public string Token { get; set; }
-
-        [JsonProperty(PropertyName = "topic", NullValueHandling = NullValueHandling.Ignore)]
-        public string Topic { get; set; }
-
-        [JsonProperty(PropertyName = "condition", NullValueHandling = NullValueHandling.Ignore)]
-        public string Condition { get; set; }
-
-        [JsonProperty(PropertyName = "data", NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> Data { get; set; }
-
-        [JsonProperty(PropertyName = "notification", NullValueHandling = NullValueHandling.Ignore)]
-        public Notification Notification { get; set; }
-
-        [JsonProperty(PropertyName = "android", NullValueHandling = NullValueHandling.Ignore)]
+        /// <summary>
+        ///     Gets or sets the Android-specific information to be included in the message.
+        /// </summary>
+        [JsonProperty(PropertyName = "android")]
         public AndroidPayload Android { get; set; }
 
-        [JsonProperty(PropertyName = "webpush", NullValueHandling = NullValueHandling.Ignore)]
-        public WebPushPayload WebPush { get; set; }
-
-        [JsonProperty(PropertyName = "apns", NullValueHandling = NullValueHandling.Ignore)]
+        /// <summary>
+        ///     Gets or sets the APNs-specific information to be included in the message.
+        /// </summary>
+        [JsonProperty(PropertyName = "apns")]
         public ApnsPayload Apns { get; set; }
-    }
 
-    public class Notification
-    {
-        [JsonProperty(PropertyName = "title", NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
+        /// <summary>
+        ///     Gets or sets the FCM condition to which the message should be sent. Must be a valid
+        ///     condition string such as <c>"'foo' in topics"</c>.
+        /// </summary>
+        [JsonProperty(PropertyName = "condition")]
+        public string Condition { get; set; }
 
-        [JsonProperty(PropertyName = "body", NullValueHandling = NullValueHandling.Ignore)]
-        public string Body { get; set; }
-    }
+        /// <summary>
+        ///     Gets or sets a collection of key-value pairs that will be added to the message as data
+        ///     fields. Keys and the values must not be null.
+        /// </summary>
+        [JsonProperty(PropertyName = "data")]
+        public IReadOnlyDictionary<string, string> Data { get; set; }
 
-    public class AndroidPayload
-    {
-        [JsonProperty(PropertyName = "collapse_key", NullValueHandling = NullValueHandling.Ignore)]
-        public string CollapseKey { get; set; }
-        
-        [JsonProperty(PropertyName = "priority", NullValueHandling = NullValueHandling.Ignore)]
-        public string Priority { get; set; }
+        /// <summary>
+        ///     Gets or sets the notification information to be included in the message.
+        /// </summary>
+        [JsonProperty(PropertyName = "notification")]
+        public Notification Notification { get; set; }
 
-        [JsonProperty(PropertyName = "ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public string Ttl { get; set; }
+        /// <summary>
+        ///     Gets or sets the registration token of the device to which the message should be sent.
+        /// </summary>
+        [JsonProperty(PropertyName = "token")]
+        public string Token { get; set; }
 
-        [JsonProperty(PropertyName = "restricted_package_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string RestrictedPackageName { get; set; }
+        /// <summary>
+        ///     Gets or sets the name of the FCM topic to which the message should be sent. Topic names
+        ///     should not contain the <c>/topics/</c> prefix.
+        /// </summary>
+        [JsonProperty(PropertyName = "topic")]
+        public string Topic { get; set; }
 
-        [JsonProperty(PropertyName = "data", NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> Data { get; set; }
-
-        [JsonProperty(PropertyName = "notification", NullValueHandling = NullValueHandling.Ignore)]
-        public AndroidNotification Notification { get; set; }
-    }
-
-    public class AndroidNotification
-    {
-        [JsonProperty(PropertyName = "title", NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
-
-        [JsonProperty(PropertyName = "body", NullValueHandling = NullValueHandling.Ignore)]
-        public string Body { get; set; }
-
-        [JsonProperty(PropertyName = "icon", NullValueHandling = NullValueHandling.Ignore)]
-        public string Icon { get; set; }
-
-        [JsonProperty(PropertyName = "color", NullValueHandling = NullValueHandling.Ignore)]
-        public string Color { get; set; }
-
-        [JsonProperty(PropertyName = "sound", NullValueHandling = NullValueHandling.Ignore)]
-        public string Sound { get; set; }
-
-        [JsonProperty(PropertyName = "tag", NullValueHandling = NullValueHandling.Ignore)]
-        public string Tag { get; set; }
-
-        [JsonProperty(PropertyName = "click_action", NullValueHandling = NullValueHandling.Ignore)]
-        public string ClickAction { get; set; }
-
-        [JsonProperty(PropertyName = "body_loc_key", NullValueHandling = NullValueHandling.Ignore)]
-        public string BodyLocKey { get; set; }
-
-        [JsonProperty(PropertyName = "body_loc_args", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] BodyLocArgs { get; set; }
-
-        [JsonProperty(PropertyName = "title_loc_key", NullValueHandling = NullValueHandling.Ignore)]
-        public string TitleLocKey { get; set; }
-
-        [JsonProperty(PropertyName = "title_loc_args", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] TitleLocArgs { get; set; }
-
-        [JsonProperty(PropertyName = "channel_id", NullValueHandling = NullValueHandling.Ignore)]
-        public string ChannelId { get; set; }
-    }
-
-    public class ApnsPayload
-    {
-        [JsonProperty(PropertyName = "payload", NullValueHandling = NullValueHandling.Ignore)]
-        public JToken Payload { get; set; }
-
-        [JsonProperty(PropertyName = "headers", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Headers { get; set; }
-    }
-
-    public class WebPushPayload
-    {
-        [JsonProperty(PropertyName = "payload", NullValueHandling = NullValueHandling.Ignore)]
-        public JToken Payload { get; set; }
-
-        [JsonProperty(PropertyName = "headers", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Headers { get; set; }
-
-        [JsonProperty(PropertyName = "data", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Data { get; set; }
-
-        [JsonProperty(PropertyName = "notification", NullValueHandling = NullValueHandling.Ignore)]
-        public object Notification { get; set; }
-
-        [JsonProperty(PropertyName = "fcm_options", NullValueHandling = NullValueHandling.Ignore)]
-        public WebPushFcmOptions FcmOptions { get; set; }
-    }
-
-    public class WebPushFcmOptions
-    {
-        [JsonProperty(PropertyName = "link", NullValueHandling = NullValueHandling.Ignore)]
-        public string Link { get; set; }
+        /// <summary>
+        ///     Gets or sets the Webpush-specific information to be included in the message.
+        /// </summary>
+        [JsonProperty(PropertyName = "webpush")]
+        public WebPushPayload WebPush { get; set; }
     }
 }

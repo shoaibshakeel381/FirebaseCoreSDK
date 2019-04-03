@@ -1,16 +1,20 @@
 ﻿namespace FirebaseCoreSDK.Firebase.Auth.ServiceAccounts
 {
+    #region Namespace Imports
+
     using System.IO;
     using System.Security.Cryptography;
 
-    using Extensions;
-
-    using Models;
+    using FirebaseCoreSDK.Extensions;
+    using FirebaseCoreSDK.Firebase.Auth.Models;
 
     using Newtonsoft.Json;
 
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.OpenSsl;
+
+    #endregion
+
 
     public class JsonServiceAccountCredentials : IServiceAccountCredentials
     {
@@ -18,42 +22,46 @@
 
         private RSAParameters _rsaParam;
 
-        public JsonServiceAccountCredentials(string fileName)
-        {
-            InitializeFromFile(fileName);
-        }
+        public JsonServiceAccountCredentials(string fileName) => InitializeFromFile(fileName);
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="content">JSON string containing service account credentials exported from firebase.<br/>
-        /// JSON should contain values for project_id, private_key and client_email</param>
+        /// <param name="content">
+        ///     JSON string containing service account credentials exported from firebase.<br />
+        ///     JSON should contain values for project_id, private_key and client_email
+        /// </param>
         /// <param name="fromFile"></param>
         public JsonServiceAccountCredentials(string content, bool fromFile)
         {
             if (fromFile)
+            {
                 InitializeFromFile(content);
-            else InitializeFromString(content);
+            }
+            else
+            {
+                InitializeFromString(content);
+            }
         }
 
-        public virtual string GetProjectId()
-        {
-            return _credentialsData.ProjectId;
-        }
+        public virtual string GetDefaultBucket() => $"{_credentialsData.ProjectId}.appspot.com";
 
-        public virtual string GetDefaultBucket()
-        {
-            return $"{_credentialsData.ProjectId}.appspot.com";
-        }
+        public virtual string GetProjectId() => _credentialsData.ProjectId;
 
-        public RSAParameters GetRSAParams()
-        {
-            return _rsaParam;
-        }
+        public RSAParameters GetRSAParams() => _rsaParam;
 
-        public virtual string GetServiceAccountEmail()
+        public virtual string GetServiceAccountEmail() => _credentialsData.ClientEmail;
+
+        private void FillRsaParams()
         {
-            return _credentialsData.ClientEmail;
+            RsaPrivateCrtKeyParameters key;
+
+            using (var sr = new StringReader(_credentialsData.PrivateKey))
+            {
+                var pr = new PemReader(sr);
+                key = (RsaPrivateCrtKeyParameters)pr.ReadObject();
+            }
+
+            _rsaParam = key.ToRSAParameters();
         }
 
         private void InitializeFromFile(string fileName)
@@ -64,6 +72,7 @@
             {
                 throw new FileLoadException("Incorrect json file was provided");
             }
+
             FillRsaParams();
         }
 
@@ -75,19 +84,8 @@
             {
                 throw new FileLoadException("Incorrect json file was provided");
             }
+
             FillRsaParams();
-        }
-
-        private void FillRsaParams()
-        {
-            RsaPrivateCrtKeyParameters key;
-            using (var sr = new StringReader(_credentialsData.PrivateKey))
-            {
-                var pr = new PemReader(sr);
-                key = (RsaPrivateCrtKeyParameters) pr.ReadObject();
-            }
-
-            _rsaParam = key.ToRSAParameters();
         }
     }
 }
