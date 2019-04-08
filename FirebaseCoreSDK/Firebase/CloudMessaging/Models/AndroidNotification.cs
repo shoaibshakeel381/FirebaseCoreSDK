@@ -10,7 +10,7 @@
     /// <summary>
     ///     Represents the Android-specific notification options that can be included in a <see cref="FirebasePushMessage" />
     /// </summary>
-    public class AndroidNotification
+    public sealed class AndroidNotification
     {
         /// <summary>
         ///     Gets or sets the title of the Android notification. When provided, overrides the title

@@ -17,8 +17,6 @@
 
     using HttpClient = FirebaseCoreSDK.HttpClients.HttpClient;
 
-    // ReSharper disable once RedundantNameQualifier
-
     #endregion
 
 
@@ -29,7 +27,7 @@
 
         public async Task<PushMessageResponse> SendCloudMessageAsync(FirebasePushMessageEnvelope request)
         {
-            var messageUri = new Uri($"/v1/projects/{Credentials.GetProjectId()}/messages:send");
+            var messageUri = new Uri($"/v1/projects/{Credentials.GetProjectId()}/messages:send", UriKind.Relative);
             var dataAsString = await SendAsync(() => BuildRequestMessage(messageUri, request)).ConfigureAwait(false);
 
             var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };

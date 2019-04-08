@@ -20,16 +20,28 @@
             : base(innerException.Message, innerException) {}
 
         public FirebaseHttpException(string requestBody, string responseBody, HttpRequestMessage request, HttpResponseMessage response)
+            => Initialize(requestBody, responseBody, request, response);
+
+        public FirebaseHttpException(
+            string requestBody,
+            string responseBody,
+            HttpRequestMessage request,
+            HttpResponseMessage response,
+            Exception innerException)
+            : this(innerException)
+            => Initialize(requestBody, responseBody, request, response);
+
+        public string RequestBody { get; set; }
+        public HttpRequestMessage RequestMessage { get; set; }
+        public string ResponseContent { get; set; }
+        public HttpResponseMessage ResponseMessage { get; set; }
+
+        private void Initialize(string requestBody, string responseBody, HttpRequestMessage request, HttpResponseMessage response)
         {
             RequestBody = requestBody;
             ResponseContent = responseBody;
             RequestMessage = request;
             ResponseMessage = response;
         }
-
-        public string RequestBody { get; }
-        public HttpRequestMessage RequestMessage { get; }
-        public string ResponseContent { get; }
-        public HttpResponseMessage ResponseMessage { get; }
     }
 }

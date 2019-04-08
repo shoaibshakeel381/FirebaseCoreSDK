@@ -5,7 +5,6 @@
     using System.Collections.Generic;
 
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
     #endregion
 
@@ -19,15 +18,12 @@
     ///     </see>
     ///     for various headers and payload fields supported by APNS.
     /// </summary>
-    public class ApnsPayload
+    public sealed class ApnsPayload
     {
-        /// <summary>
-        ///     Gets or sets the APNs headers.
-        /// </summary>
-        [JsonProperty(PropertyName = "headers")]
-        public IReadOnlyDictionary<string, string> Headers { get; set; }
+        [JsonProperty("aps")]
+        public ApnsAps Aps { get; set; }
 
-        [JsonProperty(PropertyName = "payload")]
-        private JToken Payload { get; set; }
+        [JsonExtensionData]
+        public IDictionary<string, object> CustomData { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     ///     Different directions a notification can be displayed in.
     /// </summary>
-    public enum Direction
+    public enum WebPushDirection
     {
         /// <summary>
         ///     Direction automatically determined.

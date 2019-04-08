@@ -7,7 +7,7 @@
     #endregion
 
 
-    public class FirebasePushMessageEnvelope
+    public sealed class FirebasePushMessageEnvelope
     {
         [JsonProperty("validate_only")]
         public bool DryRun { get; set; }

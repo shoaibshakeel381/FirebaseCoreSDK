@@ -12,7 +12,7 @@
     /// <summary>
     ///     Represents the Webpush protocol options that can be included in a <see cref="FirebasePushMessage" />.
     /// </summary>
-    public class WebPushPayload
+    public sealed class WebPushPayload
     {
         /// <summary>
         ///     Gets or sets the Webpush data fields. When set, overrides any data fields set via

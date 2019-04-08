@@ -13,8 +13,14 @@
     /// <summary>
     ///     Represents the Android-specific options that can be included in a <see cref="FirebasePushMessage" />.
     /// </summary>
-    public class AndroidPayload
+    public sealed class Android
     {
+        /// <summary>
+        ///     Gets or sets the priority of the message.
+        /// </summary>
+        [JsonIgnore]
+        public Priority? Priority { get; set; }
+
         /// <summary>
         ///     Gets or sets a collapse key for the message. Collapse key serves as an identifier for a
         ///     group of messages that can be collapsed, so that only the last message gets sent when
@@ -39,12 +45,6 @@
         public AndroidNotification Notification { get; set; }
 
         /// <summary>
-        ///     Gets or sets the priority of the message.
-        /// </summary>
-        [JsonIgnore]
-        public Priority? Priority { get; set; }
-
-        /// <summary>
         ///     Gets or sets the package name of the application where the registration tokens must
         ///     match in order to receive the message.
         /// </summary>
@@ -62,7 +62,17 @@
         ///     backend service.
         /// </summary>
         [JsonProperty(PropertyName = "priority")]
-        private string PriorityString { get; set; }
+        private string PriorityString {
+            get
+            {
+                if (Priority == null)
+                {
+                    return null;
+                }
+
+                return Priority.Value == Models.Priority.High ? "high" : "normal";
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the string representation of <see cref="TimeToLive" /> as accepted by the
@@ -84,20 +94,6 @@
                 var subsecondNanos = (long)((totalSeconds - seconds) * 1e9);
 
                 return subsecondNanos > 0 ? $"{seconds}.{subsecondNanos:D9}s" : $"{seconds}s";
-            }
-            set
-            {
-                var segments = value.TrimEnd('s').Split('.');
-                var seconds = long.Parse(segments[0]);
-                var ttl = TimeSpan.FromSeconds(seconds);
-
-                if (segments.Length == 2)
-                {
-                    var subsecondNanos = long.Parse(segments[1].TrimStart('0'));
-                    ttl = ttl.Add(TimeSpan.FromMilliseconds(subsecondNanos / 1e6));
-                }
-
-                TimeToLive = ttl;
             }
         }
     }

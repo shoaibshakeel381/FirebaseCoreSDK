@@ -10,22 +10,10 @@
     /// <summary>
     ///     Represents an action available to users when the notification is presented.
     /// </summary>
-    public sealed class Action
+    public sealed class WebPushAction
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Action" /> class.
-        /// </summary>
-        public Action() {}
-
-        internal Action(Action action)
-        {
-            ActionName = action.ActionName;
-            Title = action.Title;
-            Icon = action.Icon;
-        }
-
-        /// <summary>
-        ///     Gets or sets the name of the Action.
+        ///     Gets or sets the name of the WebPushAction.
         /// </summary>
         [JsonProperty("action")]
         public string ActionName { get; set; }

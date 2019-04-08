@@ -8,9 +8,12 @@
     #endregion
 
 
+    /// <summary>
+    ///     Logs activities performed in the nuget package. Most interesting logs are
+    /// </summary>
     public interface IFirebaseLogger
     {
-        LogLevel LogLevel { get; set; }
+        LogLevel LogLevel { get; }
 
         void Debug(string formatString, params object[] args);
 
@@ -18,18 +21,10 @@
 
         void Info(string formatString, params object[] args);
 
-        void OutgoingRequest(Uri url, HttpMethod method, string body, object response, int? resultCode, Exception e);
+        void OutgoingRequestCompleted(object response, int? resultCode, Exception e);
+
+        void OutgoingRequestInitiated(Uri url, HttpMethod method, string body);
 
         void Warn(string formatString, params object[] args);
-    }
-
-
-    public enum LogLevel
-    {
-        None = 0,
-        Debug,
-        Info,
-        Warning,
-        Error
     }
 }

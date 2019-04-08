@@ -25,7 +25,7 @@
         ///     Gets or sets a collection of Webpush notification actions.
         /// </summary>
         [JsonProperty("actions")]
-        public IEnumerable<Action> Actions { get; set; }
+        public IEnumerable<WebPushAction> Actions { get; set; }
 
         /// <summary>
         ///     Gets or sets the URL of the image used to represent the notification when there is not
@@ -58,7 +58,7 @@
         ///     Gets or sets the direction in which to display the notification.
         /// </summary>
         [JsonIgnore]
-        public Direction? Direction { get; set; }
+        public WebPushDirection? Direction { get; set; }
 
         /// <summary>
         ///     Gets or sets the URL to the icon of the notification.
@@ -132,31 +132,14 @@
             {
                 switch (Direction)
                 {
-                    case Models.Direction.Auto:
+                    case Models.WebPushDirection.Auto:
                         return "auto";
-                    case Models.Direction.LeftToRight:
+                    case Models.WebPushDirection.LeftToRight:
                         return "ltr";
-                    case Models.Direction.RightToLeft:
+                    case Models.WebPushDirection.RightToLeft:
                         return "rtl";
                     default:
                         return null;
-                }
-            }
-            set
-            {
-                switch (value)
-                {
-                    case "auto":
-                        Direction = Models.Direction.Auto;
-                        return;
-                    case "ltr":
-                        Direction = Models.Direction.LeftToRight;
-                        return;
-                    case "rtl":
-                        Direction = Models.Direction.RightToLeft;
-                        return;
-                    default:
-                        throw new FirebaseException($"Invalid direction value: {value}. Only 'auto', 'rtl' and 'ltr' " + "are allowed.");
                 }
             }
         }

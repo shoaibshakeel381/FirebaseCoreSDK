@@ -1,48 +1,15 @@
 ﻿namespace FirebaseCoreSDK.Logging
 {
-    #region Namespace Imports
-
-    using System;
-    using System.Net.Http;
-
-    #endregion
-
-
     /// <summary>
     ///     FirebaseNullLogger which does not log.
     /// </summary>
-    /// <seealso cref="FirebaseNullLogger" />
-    public class FirebaseNullLogger : IFirebaseLogger
+    /// <seealso cref="FirebaseConsoleLogger" />
+    public class FirebaseNullLogger : FirebaseConsoleLogger
     {
-        public LogLevel LogLevel { get; set; } = LogLevel.None;
+        public FirebaseNullLogger()
+            : this(LogLevel.None) {}
 
-        /// <see cref="IFirebaseLogger.Debug" />
-        public void Debug(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
-
-        /// <see cref="IFirebaseLogger.Error" />
-        public void Error(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
-
-        /// <see cref="IFirebaseLogger.Info" />
-        public void Info(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
-
-        public void OutgoingRequest(Uri url, HttpMethod method, string body, object response, int? resultCode, Exception e)
-        {
-            // Log nothing
-        }
-
-        /// <see cref="IFirebaseLogger.Warn" />
-        public void Warn(string formatString, params object[] args)
-        {
-            // Log nothing
-        }
+        public FirebaseNullLogger(LogLevel logLevel)
+            : base(logLevel) {}
     }
 }

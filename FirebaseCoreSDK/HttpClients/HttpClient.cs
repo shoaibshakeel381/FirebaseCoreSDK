@@ -61,19 +61,28 @@
         {
             var request = requestMessage();
 
-            Configuration.Logger?.Info($"[{request.Method}] {request.RequestUri.AbsoluteUri}");
+            HttpResponseMessage response = null;
 
-            var response = await SendAsync(request).ConfigureAwait(false);
-            await response.LogRequest(Configuration.Logger);
-            await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
+            try
+            {
+                await HttpRequestHelpers.LogOutgoingRequestInitiated(request, Configuration.Logger);
+                response = await SendAsync(request).ConfigureAwait(false);
+                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, null);
+            }
+            catch (Exception ex)
+            {
+                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, ex);
+            }
 
-            if (response.Content == null)
+            await HttpRequestHelpers.EnsureSuccessStatusCodeAsync(response, request, null).ConfigureAwait(false);
+
+
+            if (response?.Content == null)
             {
                 return null;
             }
 
             var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            Configuration.Logger?.Debug($"[RESPONSE] {dataAsString}");
             return dataAsString;
         }
     }

@@ -1,7 +1,7 @@
 ﻿namespace FirebaseCoreSDK.Firebase.CloudMessaging.Models
 {
     /// <summary>
-    ///     Priority levels that can be set on an <see cref="AndroidConfig" />.
+    ///     Priority levels for notification
     /// </summary>
     public enum Priority
     {

@@ -2,6 +2,7 @@
 {
     #region Namespace Imports
 
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Security.Cryptography;
@@ -18,9 +19,6 @@
     using Newtonsoft.Json;
 
     using HttpClient = FirebaseCoreSDK.HttpClients.HttpClient;
-
-    // ReSharper disable once RedundantNameQualifier
-
     #endregion
 
 
@@ -53,18 +51,28 @@
 
             var urlEncodedPayload = new FormUrlEncodedContent(permissionPayload);
 
-            Configuration.Logger?.Info($"[{HttpMethod.Post}] {Configuration.GoogleOAuthTokenPath}");
-            var response = await PostAsync(Configuration.GoogleOAuthTokenPath, urlEncodedPayload).ConfigureAwait(false);
-            await response.LogRequest(Configuration.Logger);
-            await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
+            HttpResponseMessage response = null;
+            var request = new HttpRequestMessage(HttpMethod.Post, Configuration.GoogleOAuthTokenPath) { Content = urlEncodedPayload };
 
-            if (response.Content == null)
+            try
+            {
+                await HttpRequestHelpers.LogOutgoingRequestInitiated(request, Configuration?.Logger);
+                response = await PostAsync(Configuration.GoogleOAuthTokenPath, urlEncodedPayload).ConfigureAwait(false);
+                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, null);
+            }
+            catch (Exception ex)
+            {
+                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, ex);
+            }
+
+            await HttpRequestHelpers.EnsureSuccessStatusCodeAsync(response, request, null).ConfigureAwait(false);
+
+            if (response?.Content == null)
             {
                 throw new FirebaseHttpException("Authentication failed, empty response content from firebase server");
             }
 
             var representation = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            Configuration.Logger?.Debug($"[RESPONSE] {representation}");
 
             var serializationSettings = new JsonSerializerSettings { ContractResolver = new AccessTokenResolver() };
             var accessToken = JsonConvert.DeserializeObject<FirebaseAccessToken>(representation, serializationSettings);

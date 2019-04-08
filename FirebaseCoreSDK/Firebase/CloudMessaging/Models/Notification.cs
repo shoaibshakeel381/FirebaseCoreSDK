@@ -10,7 +10,7 @@
     /// <summary>
     ///     Represents the notification parameters that can be included in a <see cref="FirebasePushMessage" />.
     /// </summary>
-    public class Notification
+    public sealed class Notification
     {
         /// <summary>
         ///     Gets or sets the body of the notification.

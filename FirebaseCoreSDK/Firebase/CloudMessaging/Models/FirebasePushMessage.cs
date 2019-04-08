@@ -15,19 +15,19 @@
     ///     specified by setting exactly one of the <see cref="Token" />, <see cref="Topic" /> or
     ///     <see cref="Condition" /> fields.
     /// </summary>
-    public class FirebasePushMessage
+    public sealed class FirebasePushMessage
     {
         /// <summary>
         ///     Gets or sets the Android-specific information to be included in the message.
         /// </summary>
         [JsonProperty(PropertyName = "android")]
-        public AndroidPayload Android { get; set; }
+        public Android Android { get; set; }
 
         /// <summary>
         ///     Gets or sets the APNs-specific information to be included in the message.
         /// </summary>
         [JsonProperty(PropertyName = "apns")]
-        public ApnsPayload Apns { get; set; }
+        public Apns Apns { get; set; }
 
         /// <summary>
         ///     Gets or sets the FCM condition to which the message should be sent. Must be a valid
