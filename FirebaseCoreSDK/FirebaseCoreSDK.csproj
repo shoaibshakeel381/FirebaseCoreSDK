@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.2-l</PackageVersion>
+    <PackageVersion>1.1.3</PackageVersion>
     <PackageId>FirebaseCoreSDK</PackageId>
     <Title>Firebase Core SDK</Title>
     <Authors>Shoaib Shakeel</Authors>
@@ -19,7 +19,7 @@ But it has improved code organization and so its usage is similar to older nuget
     <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
     <IncludeSource>false</IncludeSource>
     <PackageTags>firebase .net core</PackageTags>
-    <Version>1.1.2-l</Version>
+    <Version>1.1.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
