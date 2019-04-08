@@ -2,7 +2,7 @@
 
 FirebaseCoreSDK is .net core library for interacting with firebase database, Cloud Messaging and storage. Library is supposed to be used in server side apps. This code is based on https://github.com/shoaibshakeel381/FirebaseCoreAdmin 
 But it has improved code organization with additional fixes and enhancements. It supports
-- Firebase Cloud Messaging
+- Firebase Cloud Messaging (Tested Basic, Android and APNs Messaging modes, WebPush should work, but is untested)
 - Firebase Realtime Database (Basic Crud, no Offline or Streaming support)
 - Firebase Storage
 - Authentication (Generate Custom Token, no user management)
