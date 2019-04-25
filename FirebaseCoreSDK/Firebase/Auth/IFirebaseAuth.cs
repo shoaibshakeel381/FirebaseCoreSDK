@@ -8,7 +8,7 @@
     #endregion
 
 
-    public interface IFirebaseAuth : IDisposable
+    public interface IFirebaseAuth
     {
         Task AuthenticateAsync();
         string CreateCustomToken(string userId);

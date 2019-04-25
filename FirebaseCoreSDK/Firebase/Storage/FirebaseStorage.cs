@@ -34,14 +34,6 @@
             _httpClient = new StorageHttpClient(credentials, configuration);
         }
 
-        ~FirebaseStorage() => Dispose(false);
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public Task<ObjectMetadata> GetObjectMetaDataAsync(string path)
         {
             var urlEncodedPath = GetUrlEncodedPath(path);
@@ -56,10 +48,10 @@
                 return null;
             }
 
-            var normalziedPath = WebUtility.UrlEncode(path.TrimSlashes());
+            var normalizedPath = WebUtility.UrlEncode(path.TrimSlashes());
 
             var auth = _httpClient.GetAuthority();
-            var fullPath = auth.Append($"/{_credentials.GetDefaultBucket()}/{normalziedPath}?alt=media");
+            var fullPath = auth.Append($"/{_credentials.GetDefaultBucket()}/{normalizedPath}?alt=media");
             return fullPath.AbsoluteUri;
         }
 
@@ -120,20 +112,7 @@
             }
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
-
-            _httpClient?.Dispose();
-        }
-
-        private string BuilCanonicalizedResource(string path)
-            => $"/{_credentials.GetDefaultBucket().Trim().TrimSlashes()}/{WebUtility.UrlEncode(path.TrimSlashes())}";
-
-        private string BuildActionMethod(SigningAction action)
+        private static string BuildActionMethod(SigningAction action)
         {
             var actionMethod = string.Empty;
 
@@ -153,6 +132,9 @@
             return actionMethod;
         }
 
+        private string BuildCanonicalizedResource(string path)
+            => $"/{_credentials.GetDefaultBucket().Trim().TrimSlashes()}/{WebUtility.UrlEncode(path.TrimSlashes())}";
+
         private string BuildContentMD5(string contentMd5) => string.IsNullOrWhiteSpace(contentMd5) ? string.Empty : contentMd5.Trim();
 
         private string BuildContentType(string contentType) => string.IsNullOrWhiteSpace(contentType) ? string.Empty : contentType.Trim();
@@ -167,7 +149,7 @@
                 BuildContentMD5(options.ContentMD5),
                 BuildContentType(options.ContentType),
                 BuildExpiration(options.ExpireDate),
-                BuilCanonicalizedResource(options.Path)
+                BuildCanonicalizedResource(options.Path)
             };
 
             return payload;

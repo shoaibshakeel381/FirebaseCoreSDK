@@ -2,8 +2,6 @@
 {
     #region Namespace Imports
 
-    using System;
-
     using FirebaseCoreSDK.Configuration;
     using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
     using FirebaseCoreSDK.HttpClients.Database;
@@ -22,24 +20,6 @@
             _httpClient = new DatabaseHttpClient(credentials, configuration);
         }
 
-        ~FirebaseDatabase() => Dispose(false);
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public IDatabaseRef Ref(string path) => new DatabaseRef(_httpClient, _configuration, path);
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
-
-            _httpClient?.Dispose();
-        }
     }
 }

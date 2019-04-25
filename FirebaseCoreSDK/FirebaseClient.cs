@@ -32,32 +32,11 @@
             Initialize(credentials);
         }
 
-        ~FirebaseClient() => Dispose(false);
-
         public IFirebaseAuth Auth { get; private set; }
         public IFirebaseCloudMessaging CloudMessaging { get; private set; }
         public FirebaseSDKConfiguration Configuration { get; }
         public IFirebaseDatabase Database { get; private set; }
         public IFirebaseStorage Storage { get; private set; }
-
-        public void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
-
-            Auth.Dispose();
-            Database?.Dispose();
-            Storage?.Dispose();
-            CloudMessaging?.Dispose();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         private void Initialize(IServiceAccountCredentials credentials)
         {

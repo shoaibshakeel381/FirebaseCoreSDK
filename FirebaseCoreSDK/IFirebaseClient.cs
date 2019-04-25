@@ -13,7 +13,7 @@
     #endregion
 
 
-    public interface IFirebaseClient : IDisposable
+    public interface IFirebaseClient
     {
         IFirebaseAuth Auth { get; }
 

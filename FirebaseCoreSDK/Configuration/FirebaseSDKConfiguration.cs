@@ -8,6 +8,7 @@
     using FirebaseCoreSDK.Firebase.Auth.Encryption;
     using FirebaseCoreSDK.Firebase.Auth.Models;
     using FirebaseCoreSDK.Firebase.Auth.ServiceAccounts;
+    using FirebaseCoreSDK.HttpClients;
     using FirebaseCoreSDK.Logging;
 
     #endregion
@@ -25,6 +26,7 @@
         {
             RequestedAccess = requestedAccess;
             AccessToken = new FirebaseAccessToken();
+            HttpClientProxy = new TransientHttpClientProxy(this);
         }
 
         /// <summary>
@@ -60,6 +62,11 @@
         ///     Google OAuth URL
         /// </summary>
         public string GoogleOAuthTokenPath { get; set; } = "https://www.googleapis.com/oauth2/v4/token";
+
+        /// <summary>
+        ///     Provide Custom implementation if you need to create mocks or handle HttpClient instance lifetime like for Polly
+        /// </summary>
+        public IHttpClientProxy HttpClientProxy { get; set; }
 
         /// <summary>
         ///     Custom Logger

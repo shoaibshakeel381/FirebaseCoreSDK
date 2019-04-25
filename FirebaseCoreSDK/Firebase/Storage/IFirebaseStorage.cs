@@ -10,7 +10,7 @@
     #endregion
 
 
-    public interface IFirebaseStorage : IDisposable
+    public interface IFirebaseStorage
     {
         Task<ObjectMetadata> GetObjectMetaDataAsync(string path);
         string GetPublicUrl(string path);

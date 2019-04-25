@@ -11,7 +11,7 @@
     #endregion
 
 
-    public interface IDatabaseHttpClient : IHttpClient
+    public interface IDatabaseHttpClient : IFirebaseHttpClient
     {
         Task DeletePathAsync(Uri path);
         Task DeletePathAsync(string path);

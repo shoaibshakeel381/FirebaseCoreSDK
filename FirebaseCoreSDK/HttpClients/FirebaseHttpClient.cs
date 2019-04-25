@@ -14,20 +14,19 @@
     #endregion
 
 
-    internal abstract class HttpClient : System.Net.Http.HttpClient, IHttpClient
+    internal abstract class FirebaseHttpClient : IFirebaseHttpClient
     {
         protected readonly Uri Authority;
+        protected readonly IHttpClientProxy Client;
         protected readonly FirebaseSDKConfiguration Configuration;
         protected readonly IServiceAccountCredentials Credentials;
 
-        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
-            : this(credentials, configuration, null) {}
-
-        protected HttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration, Uri authority)
+        protected FirebaseHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration, Uri authority = null)
         {
             Credentials = credentials;
             Configuration = configuration;
             Authority = authority;
+            Client = Configuration.HttpClientProxy;
         }
 
         public Uri GetAuthority() => Authority;
@@ -57,33 +56,6 @@
             return Authority == null ? uri : Authority.Append(uri);
         }
 
-        protected async Task<string> SendAsync(Func<HttpRequestMessage> requestMessage)
-        {
-            var request = requestMessage();
-
-            HttpResponseMessage response = null;
-
-            try
-            {
-                await HttpRequestHelpers.LogOutgoingRequestInitiated(request, Configuration.Logger);
-                response = await SendAsync(request).ConfigureAwait(false);
-                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, null);
-            }
-            catch (Exception ex)
-            {
-                await HttpRequestHelpers.LogOutgoingRequestCompleted(response, Configuration.Logger, ex);
-            }
-
-            await HttpRequestHelpers.EnsureSuccessStatusCodeAsync(response, request, null).ConfigureAwait(false);
-
-
-            if (response?.Content == null)
-            {
-                return null;
-            }
-
-            var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return dataAsString;
-        }
+        protected Task<string> SendAsync(Func<HttpRequestMessage> requestMessage) => Client.SendAsync(requestMessage);
     }
 }

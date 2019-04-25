@@ -10,7 +10,7 @@
     #endregion
 
 
-    public interface IFirebaseCloudMessaging : IDisposable
+    public interface IFirebaseCloudMessaging
     {
         /// <summary>
         ///     Send Push Notifications

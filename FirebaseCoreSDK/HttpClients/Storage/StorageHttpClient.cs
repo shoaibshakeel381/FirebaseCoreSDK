@@ -13,14 +13,12 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
-    using HttpClient = FirebaseCoreSDK.HttpClients.HttpClient;
-
     // ReSharper disable once RedundantNameQualifier
 
     #endregion
 
 
-    internal class StorageHttpClient : HttpClient, IStorageHttpClient
+    internal class StorageHttpClient : FirebaseHttpClient, IStorageHttpClient
     {
         public StorageHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
             : base(credentials, configuration, new Uri($"{configuration.StorageBaseAuthority.TrimSlashes()}", UriKind.Absolute)) {}

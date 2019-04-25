@@ -7,6 +7,7 @@ But it has improved code organization with additional fixes and enhancements. It
 - Firebase Storage
 - Authentication (Generate Custom Token, no user management)
 - Logging (You can provide logger in `FirebaseSDKConfiguration`)
+- Support for plugging custom HttpClient for supprting Mocks, `IHttpClientFactory`, Polly etc
 
 ## Initialization
 
@@ -186,7 +187,68 @@ var message = new FirebasePushMessage();
 var result = await firebaseClient.CloudMessaging.SendCloudMessageAsync(message);
 ```
 
+## Custom Http Request Handling
 
+It is now possible to provide custom HTTP request handler by providing an implementation for `IHttpClientProxy` in `FirebaseSDKConfiguration`. SDK comes with a default implementation as `TransientHttpClientProxy`, clients can override it if need to. A sample implementation for using Polly is given below. In ASP.NET Core >= 2.1, it is recomended to also use `IHttpRequestFactory` to create instances of `HttpClient`.
+
+Polly Sample Code:
+
+```C#
+public class FirebaseHttpClientProxy : TransientHttpClientProxy
+{
+    private readonly AsyncRetryPolicy<HttpResponseMessage> _retryPolicy;
+
+    public FirebaseHttpClientProxy()
+    {
+        _retryPolicy = HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .Or<FirebaseHttpException>(StatusCodeShouldBeRetried)
+            .WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt))));
+    }
+
+    /// <inheritdoc />
+    public override async Task<string> SendAsync(Func<HttpRequestMessage> request)
+    {
+        var response = await _retryPolicy.ExecuteAsync(() => SendAsync(request()));
+        return await GetResponseContent(response);
+    }
+
+    private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+    {
+        var uri = request.RequestUri;
+
+        using (var client = new HttpClient()) // TODO: Use IHttpClientFactory here
+        {
+            var response = await client.SendAsync(request);
+            await EnsureSuccessStatusCodeAsync(response, request, null).ConfigureAwait(false);
+            
+            return response;
+        }
+    }
+
+    private static bool StatusCodeShouldBeRetried(FirebaseHttpException r)
+    {
+        if (r.ResponseMessage?.StatusCode < HttpStatusCode.InternalServerError)
+        {
+            return r.ResponseMessage.StatusCode == HttpStatusCode.RequestTimeout;
+        }
+
+        return true;
+    }
+}
+```
+
+Instance of this class can be provided in `FirebaseSDKConfiguration` which will be passed to `FirebaseClient` constructor.
+
+```c#
+var sdkConfiguration = new FirebaseSDKConfiguration 
+    { 
+        HttpClientProxy = new FirebaseHttpClientProxy(),
+        Credentials = new JsonServiceAccountCredentials("json-service-account-credentials-string", false);
+    };
+
+var firebaseClient = new FirebaseClient(sdkConfiguration);
+```
 
 
 

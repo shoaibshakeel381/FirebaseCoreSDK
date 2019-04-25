@@ -9,7 +9,7 @@
     #endregion
 
 
-    internal interface ICloudMessagingHttpClient : IHttpClient
+    internal interface ICloudMessagingHttpClient : IFirebaseHttpClient
     {
         Task<PushMessageResponse> SendCloudMessageAsync(FirebasePushMessageEnvelope request);
     }

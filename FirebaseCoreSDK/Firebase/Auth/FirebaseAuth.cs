@@ -2,7 +2,6 @@
 {
     #region Namespace Imports
 
-    using System;
     using System.Threading.Tasks;
 
     using FirebaseCoreSDK.Configuration;
@@ -23,8 +22,6 @@
             _httpClient = new AuthHttpClient(credentials, configuration);
         }
 
-        ~FirebaseAuth() => Dispose(false);
-
         public async Task AuthenticateAsync()
         {
             var result = await _httpClient.AuthenticateAsync().ConfigureAwait(false);
@@ -32,21 +29,5 @@
         }
 
         public string CreateCustomToken(string userId) => _httpClient.CreateCustomToken(userId);
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
-
-            _httpClient?.Dispose();
-        }
     }
 }

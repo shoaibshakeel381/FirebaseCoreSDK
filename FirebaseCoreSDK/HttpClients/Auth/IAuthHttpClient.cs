@@ -9,7 +9,7 @@
     #endregion
 
 
-    internal interface IAuthHttpClient : IHttpClient
+    internal interface IAuthHttpClient : IFirebaseHttpClient
     {
         Task<FirebaseAccessToken> AuthenticateAsync();
         string CreateCustomToken(string userId);

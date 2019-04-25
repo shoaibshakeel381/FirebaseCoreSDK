@@ -15,12 +15,10 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
-    using HttpClient = FirebaseCoreSDK.HttpClients.HttpClient;
-
     #endregion
 
 
-    internal class CloudMessagingHttpClient : HttpClient, ICloudMessagingHttpClient
+    internal class CloudMessagingHttpClient : FirebaseHttpClient, ICloudMessagingHttpClient
     {
         public CloudMessagingHttpClient(IServiceAccountCredentials credentials, FirebaseSDKConfiguration configuration)
             : base(credentials, configuration, new Uri($"{configuration.CloudMessagingAuthority.TrimSlashes()}", UriKind.Absolute)) {}

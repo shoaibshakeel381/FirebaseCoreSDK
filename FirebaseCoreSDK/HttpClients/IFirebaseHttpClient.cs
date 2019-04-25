@@ -7,7 +7,7 @@
     #endregion
 
 
-    public interface IHttpClient : IDisposable
+    public interface IFirebaseHttpClient
     {
         Uri GetAuthority();
     }

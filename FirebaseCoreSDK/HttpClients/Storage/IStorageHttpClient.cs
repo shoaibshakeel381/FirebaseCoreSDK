@@ -9,7 +9,7 @@
     #endregion
 
 
-    internal interface IStorageHttpClient : IHttpClient
+    internal interface IStorageHttpClient : IFirebaseHttpClient
     {
         Task<T> SendStorageRequestAsync<T>(Uri path, HttpMethod method);
     }

@@ -7,7 +7,7 @@
     #endregion
 
 
-    public interface IFirebaseDatabase : IDisposable
+    public interface IFirebaseDatabase
     {
         IDatabaseRef Ref(string path);
     }
