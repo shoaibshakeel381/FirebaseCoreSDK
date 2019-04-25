@@ -8,14 +8,12 @@
     <Authors>Shoaib Shakeel</Authors>
     <Description>Firebase SDK for .NET Core server side apps</Description>
     <PackageDescription>
-      This package is based on https://www.nuget.org/packages/FirebaseCoreAdminRevived/,
-      It supports
-      - Firebase Cloud Messaging
-      - Firebase Realtime Database (Basic Crud, no Offline or Streaming support)
-      - Firebase Storage
-      - Authentication (Generate Custom Token for users, no user management)
-      - Logging (You can provide logger in FirebaseSDKConfiguration)
-      - Support for plugging custom HttpClient for supprting mocks, IHttpClientFactory, Polly etc, see github repo.
+- Firebase Cloud Messaging
+- Firebase Realtime Database (Basic Crud, no Offline or Streaming support)
+- Firebase Storage
+- Authentication (Generate Custom Token for users, no user management)
+- Logging (You can provide logger in FirebaseSDKConfiguration)
+- Support for plugging custom HttpClient for supprting mocks, IHttpClientFactory, Polly etc, see github repo.
     </PackageDescription>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
