@@ -47,6 +47,14 @@ Create token for some `userId` which should be used by client to authenticate ag
  var token = firebaseClient.Auth.CreateCustomToken(userId);
 ```
 
+Developers will need to first get access token from google before actually calling any Firebase api. This can be done as follows:
+
+```C#
+await firebaseClient.Auth.AuthenticateAsync();
+```
+SDK will cache the access token in `FirebaseSDKConfiguration` object provided during initialization. SDK will then try to use it in every Firebase API call. Developers need to make sure that `FirebaseSDKConfiguration` object provided earlier is a singleton so they don't have to re-login every time a Firebase API needs to be called. If token is expired SDK will throw an Exception.
+
+
 ## Database
 Getting reference on some node of database use `firebaseClient.Database.Ref("endpoint")` for example `firebaseClient.Database.Ref("users/12/details")`
 
