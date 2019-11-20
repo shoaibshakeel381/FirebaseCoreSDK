@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.5</PackageVersion>
+    <PackageVersion>1.1.6</PackageVersion>
     <PackageId>FirebaseCoreSDK</PackageId>
     <Title>Firebase Core SDK</Title>
     <Authors>Shoaib Shakeel</Authors>
