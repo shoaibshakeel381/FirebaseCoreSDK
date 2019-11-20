@@ -21,5 +21,6 @@
         }
 
         public IDatabaseRef Ref(string path) => new DatabaseRef(_httpClient, _configuration, path);
+        public IDatabaseRef Ref(string path, QueryBuilder queryBuilder) => new DatabaseRef(_httpClient, _configuration, path, queryBuilder);
     }
 }

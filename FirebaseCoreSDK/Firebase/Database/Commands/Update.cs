@@ -6,6 +6,7 @@ namespace FirebaseCoreSDK.Firebase.Database
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     #endregion
@@ -35,6 +36,17 @@ namespace FirebaseCoreSDK.Firebase.Database
 
             var databaseRef = (DatabaseRef)firebaseRef;
             return databaseRef.HttpClient.UpdatePathAsync<T>(databaseRef.Path, content);
+        }
+
+        public static Task<T> UpdateWithKeyAsync<T>(this IDatabaseRef firebaseRef, IEnumerable<T> contentList) where T : IKeyEntity
+        {
+            if (contentList == null || !contentList.Any())
+            {
+                throw new ArgumentNullException(nameof(contentList));
+            }
+
+            var databaseRef = (DatabaseRef)firebaseRef;
+            return databaseRef.HttpClient.UpdatePathWithKeyInjectedAsync(databaseRef.Path, contentList);
         }
     }
 }
