@@ -20,6 +20,6 @@
             _httpClient = new DatabaseHttpClient(credentials, configuration);
         }
 
-        public IDatabaseRef Ref(string path) => new DatabaseRef(_httpClient, _configuration, path);
+        public IDatabaseRef Ref(string path, QueryBuilder queryBuilder= null) => new DatabaseRef(_httpClient, _configuration, path, queryBuilder);
     }
 }

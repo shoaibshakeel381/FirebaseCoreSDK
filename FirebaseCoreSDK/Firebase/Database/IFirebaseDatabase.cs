@@ -9,6 +9,6 @@
 
     public interface IFirebaseDatabase
     {
-        IDatabaseRef Ref(string path);
+        IDatabaseRef Ref(string path, QueryBuilder queryBuilder = null);
     }
 }

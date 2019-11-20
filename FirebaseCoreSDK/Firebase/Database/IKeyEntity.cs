@@ -7,9 +7,9 @@
     #endregion
 
 
-    public class KeyEntity
+    public interface IKeyEntity
     {
         [JsonIgnore]
-        public string Key { get; set; }
+        string Key { get; set; }
     }
 }

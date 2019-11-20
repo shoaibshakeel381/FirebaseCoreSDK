@@ -3,6 +3,7 @@
     #region Namespace Imports
 
     using System;
+    using System.Web;
 
     using FirebaseCoreSDK.Configuration;
     using FirebaseCoreSDK.Extensions;
@@ -15,14 +16,14 @@
     {
         internal readonly IDatabaseHttpClient HttpClient;
 
-        public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath)
+        public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath, QueryBuilder queryBuilder = null )
         {
             if (string.IsNullOrWhiteSpace(refPath))
             {
                 throw new ArgumentNullException(nameof(refPath));
             }
 
-            Path = $"{refPath.TrimSlashes()}.json";
+            Path = queryBuilder != null ? $"{refPath.TrimSlashes()}.json?{queryBuilder.ToQueryString()}" : $"{refPath.TrimSlashes()}.json";
 
             HttpClient = httpClient;
         }

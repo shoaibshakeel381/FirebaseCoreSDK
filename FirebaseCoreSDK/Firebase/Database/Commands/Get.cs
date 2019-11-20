@@ -30,7 +30,7 @@ namespace FirebaseCoreSDK.Firebase.Database
             return databaseRef.HttpClient.GetFromPathAsync<T>(uri);
         }
 
-        public static Task<IList<T>> GetWithKeyInjectedAsync<T>(this IDatabaseRef firebaseRef) where T : KeyEntity
+        public static Task<IList<T>> GetWithKeyInjectedAsync<T>(this IDatabaseRef firebaseRef) where T : IKeyEntity
         {
             var databaseRef = (DatabaseRef)firebaseRef;
             var uri = new Uri(databaseRef.Path, UriKind.Relative);
@@ -38,7 +38,7 @@ namespace FirebaseCoreSDK.Firebase.Database
             return databaseRef.HttpClient.GetFromPathWithKeyInjectedAsync<T>(uri);
         }
 
-        public static Task<IList<T>> GetWithKeyInjectedAsync<T>(this IDatabaseRef firebaseRef, QueryBuilder queryBuilder) where T : KeyEntity
+        public static Task<IList<T>> GetWithKeyInjectedAsync<T>(this IDatabaseRef firebaseRef, QueryBuilder queryBuilder) where T : IKeyEntity
         {
             var queryParams = $"?{queryBuilder.ToQueryString()}";
             var databaseRef = (DatabaseRef)firebaseRef;

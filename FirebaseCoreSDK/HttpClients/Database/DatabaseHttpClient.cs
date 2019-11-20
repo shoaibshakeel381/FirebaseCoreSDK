@@ -40,10 +40,10 @@
             return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
         }
 
-        public Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : KeyEntity
+        public Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : IKeyEntity
             => GetFromPathWithKeyInjectedAsync<T>(new Uri(path, UriKind.Relative));
 
-        public async Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : KeyEntity
+        public async Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : IKeyEntity
         {
             var dataAsString = await SendAsync(() => PrepareGetRequest(path)).ConfigureAwait(false);
             var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
@@ -97,11 +97,34 @@
             return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
         }
 
-        private HttpRequestMessage PrepareContentRequest<T>(Uri path, T content, HttpMethod method)
+        public async Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : IKeyEntity
+        {
+            var dataAsString = await SendAsync(() => PrepareContentRequestWithKey(new Uri(path, UriKind.Relative), contentList, HttpMethod.Patch)).ConfigureAwait(false);
+
+            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+        }
+
+        private HttpRequestMessage PrepareContentRequest<T>(Uri path, T content, HttpMethod method) 
         {
             var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
             var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
+            var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
+            var fullUri = GetFullAbsoluteUrl(path);
+
+            var message = new HttpRequestMessage { RequestUri = fullUri, Method = method, Content = jsonContent };
+
+            AddAuthHeaders(message);
+            return message;
+        }
+
+        private HttpRequestMessage PrepareContentRequestWithKey<T>(Uri path, IEnumerable<T> content, HttpMethod method) where T : IKeyEntity
+        {
+            var dictionary = content.ToDictionary(x => x.Key, x=> x);
+            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+
+            var stringContent = JsonConvert.SerializeObject(dictionary, serializationOptions);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
             var fullUri = GetFullAbsoluteUrl(path);
 
