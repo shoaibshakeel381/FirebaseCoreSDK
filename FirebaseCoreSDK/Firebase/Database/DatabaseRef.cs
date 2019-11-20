@@ -16,7 +16,19 @@
     {
         internal readonly IDatabaseHttpClient HttpClient;
 
-        public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath, QueryBuilder queryBuilder = null )
+        public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath)
+        {
+            if (string.IsNullOrWhiteSpace(refPath))
+            {
+                throw new ArgumentNullException(nameof(refPath));
+            }
+
+            Path = $"{refPath.TrimSlashes()}.json";
+
+            HttpClient = httpClient;
+        }
+
+        public DatabaseRef(IDatabaseHttpClient httpClient, FirebaseSDKConfiguration configuration, string refPath, QueryBuilder queryBuilder)
         {
             if (string.IsNullOrWhiteSpace(refPath))
             {
