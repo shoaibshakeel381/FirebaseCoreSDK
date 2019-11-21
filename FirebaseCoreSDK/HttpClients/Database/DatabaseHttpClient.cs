@@ -50,7 +50,7 @@
 
             var result = JsonConvert.DeserializeObject<Dictionary<string, T>>(dataAsString, serializationOptions);
 
-            return result.Select(
+            return result?.Select(
                     s =>
                     {
                         if (s.Value != null)
