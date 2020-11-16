@@ -26,7 +26,7 @@
             Credentials = credentials;
             Configuration = configuration;
             Authority = authority;
-            Client = Configuration.HttpClientProxy;
+            Client = Configuration.HttpClientProxy(configuration);
         }
 
         public Uri GetAuthority() => Authority;

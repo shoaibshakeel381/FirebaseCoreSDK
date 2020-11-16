@@ -26,7 +26,7 @@
         {
             RequestedAccess = requestedAccess;
             AccessToken = new FirebaseAccessToken();
-            HttpClientProxy = new TransientHttpClientProxy(this);
+            HttpClientProxy = configuration => new TransientHttpClientProxy(configuration);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@
         /// <summary>
         ///     Provide Custom implementation if you need to create mocks or handle HttpClient instance lifetime like for Polly
         /// </summary>
-        public IHttpClientProxy HttpClientProxy { get; set; }
+        public Func<FirebaseSDKConfiguration, IHttpClientProxy> HttpClientProxy { get; set; }
 
         /// <summary>
         ///     Custom Logger
