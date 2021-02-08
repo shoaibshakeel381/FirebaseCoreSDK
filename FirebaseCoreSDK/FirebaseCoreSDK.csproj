@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.2.1</PackageVersion>
     <PackageId>FirebaseCoreSDK</PackageId>
     <Title>Firebase Core SDK</Title>
     <Authors>Shoaib Shakeel</Authors>
@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/shoaibshakeel381/FirebaseCoreSDK</RepositoryUrl>
     <IncludeSource>false</IncludeSource>
     <PackageTags>firebase .net core</PackageTags>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

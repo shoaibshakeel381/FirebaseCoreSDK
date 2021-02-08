@@ -9,6 +9,9 @@
     using FirebaseCoreSDK.Configuration;
     using FirebaseCoreSDK.Exceptions;
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     #endregion
 
 
@@ -19,6 +22,12 @@
         public TransientHttpClientProxy() {}
 
         public TransientHttpClientProxy(FirebaseSDKConfiguration configuration) => _configuration = configuration;
+
+        /// <inheritdoc />
+        public virtual JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         /// <inheritdoc />
         public virtual async Task<string> SendAsync(Func<HttpRequestMessage> requestMessage)

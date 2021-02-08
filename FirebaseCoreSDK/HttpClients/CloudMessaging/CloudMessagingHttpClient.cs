@@ -28,15 +28,12 @@
             var messageUri = new Uri($"/v1/projects/{Credentials.GetProjectId()}/messages:send", UriKind.Relative);
             var dataAsString = await SendAsync(() => BuildRequestMessage(messageUri, request)).ConfigureAwait(false);
 
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.DeserializeObject<PushMessageResponse>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<PushMessageResponse>(dataAsString, Client.SerializerSettings);
         }
 
         private HttpRequestMessage BuildRequestMessage(Uri path, FirebasePushMessageEnvelope content)
         {
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-
-            var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
+            var stringContent = JsonConvert.SerializeObject(content, Client.SerializerSettings);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
             var fullUri = GetFullAbsoluteUrl(path);
 

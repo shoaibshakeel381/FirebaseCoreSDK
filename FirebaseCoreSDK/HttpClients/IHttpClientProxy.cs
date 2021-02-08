@@ -6,6 +6,8 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    using Newtonsoft.Json;
+
     #endregion
 
 
@@ -18,5 +20,10 @@
         /// <param name="request">The HTTP request message to send.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         Task<string> SendAsync(Func<HttpRequestMessage> request);
+
+        /// <summary>
+        ///     Json serialization settings
+        /// </summary>
+        JsonSerializerSettings SerializerSettings { get; }
     }
 }
