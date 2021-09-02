@@ -60,19 +60,19 @@
 
                 if (!string.IsNullOrWhiteSpace(CollapseKey))
                 {
-                    headers.TryAdd("apns-collapse-id", CollapseKey);
+                    headers.Add("apns-collapse-id", CollapseKey);
                 }
 
                 if (Priority != null)
                 {
-                    headers.TryAdd("apns-priority", Priority.Value == Models.Priority.High ? "10" : "5");
+                    headers.Add("apns-priority", Priority.Value == Models.Priority.High ? "10" : "5");
                 }
 
                 // ReSharper disable once InvertIf
                 if (TimeToLive != null)
                 {
                     var ttl = (long)DateTime.UtcNow.AddSeconds(TimeToLive.Value.TotalSeconds).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                    headers.TryAdd("apns-expiration", ttl.ToString());
+                    headers.Add("apns-expiration", ttl.ToString());
                 }
 
                 return headers;

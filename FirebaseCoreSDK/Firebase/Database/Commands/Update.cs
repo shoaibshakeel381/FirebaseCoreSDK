@@ -38,7 +38,7 @@ namespace FirebaseCoreSDK.Firebase.Database
             return databaseRef.HttpClient.UpdatePathAsync<T>(databaseRef.Path, content);
         }
 
-        public static Task<T> UpdateWithKeyAsync<T>(this IDatabaseRef firebaseRef, IEnumerable<T> contentList) where T : IKeyEntity
+        public static Task<T> UpdateWithKeyAsync<T>(this IDatabaseRef firebaseRef, IEnumerable<T> contentList) where T : class, IKeyEntity
         {
             if (contentList == null || !contentList.Any())
             {
