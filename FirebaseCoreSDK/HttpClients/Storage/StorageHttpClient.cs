@@ -26,8 +26,7 @@
         public async Task<T> SendStorageRequestAsync<T>(Uri path, HttpMethod method)
         {
             var dataAsString = await SendAsync(() => PrepareStorageRequest(path, method)).ConfigureAwait(false);
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
         private HttpRequestMessage PrepareStorageRequest(Uri path, HttpMethod method)

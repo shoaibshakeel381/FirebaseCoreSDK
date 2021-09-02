@@ -35,9 +35,8 @@
         public async Task<T> GetFromPathAsync<T>(Uri path)
         {
             var dataAsString = await SendAsync(() => PrepareGetRequest(path)).ConfigureAwait(false);
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
-            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
         /// <inheritdoc />
@@ -48,9 +47,8 @@
         public async Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : class, IKeyEntity
         {
             var dataAsString = await SendAsync(() => PrepareGetRequest(path)).ConfigureAwait(false);
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
-            var result = JsonConvert.DeserializeObject<Dictionary<string, T>>(dataAsString, serializationOptions);
+            var result = JsonConvert.DeserializeObject<Dictionary<string, T>>(dataAsString, Client.SerializerSettings);
 
             return result?.Select(
                     s =>
@@ -80,8 +78,7 @@
         public async Task<T> SetToPathAsync<T>(Uri path, T content)
         {
             var dataAsString = await SendAsync(() => PrepareSetRequest(path, content)).ConfigureAwait(false);
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
         public Task<string> UpdatePathAsync(string path, IDictionary<string, object> content) => UpdatePathAsync(new Uri(path, UriKind.Relative), content);
@@ -95,23 +92,19 @@
         {
             var dataAsString = await SendAsync(() => PreparePatchRequest(path, content)).ConfigureAwait(false);
 
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
         public async Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : class, IKeyEntity
         {
             var dataAsString = await SendAsync(() => PrepareContentRequestWithKey(new Uri(path, UriKind.Relative), contentList, new HttpMethod("PATCH"))).ConfigureAwait(false);
 
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+            return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
         private HttpRequestMessage PrepareContentRequest<T>(Uri path, T content, HttpMethod method) 
         {
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-
-            var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
+            var stringContent = JsonConvert.SerializeObject(content, Client.SerializerSettings);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
             var fullUri = GetFullAbsoluteUrl(path);
 
@@ -124,9 +117,8 @@
         private HttpRequestMessage PrepareContentRequestWithKey<T>(Uri path, IEnumerable<T> content, HttpMethod method) where T : IKeyEntity
         {
             var dictionary = content.ToDictionary(x => x.Key, x=> x);
-            var serializationOptions = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
-            var stringContent = JsonConvert.SerializeObject(dictionary, serializationOptions);
+            var stringContent = JsonConvert.SerializeObject(dictionary, Client.SerializerSettings);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
             var fullUri = GetFullAbsoluteUrl(path);
 
