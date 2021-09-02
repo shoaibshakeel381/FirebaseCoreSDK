@@ -39,10 +39,12 @@
             return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
-        public Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : IKeyEntity
+        /// <inheritdoc />
+        public Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : class, IKeyEntity
             => GetFromPathWithKeyInjectedAsync<T>(new Uri(path, UriKind.Relative));
 
-        public async Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : IKeyEntity
+        /// <inheritdoc />
+        public async Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : class, IKeyEntity
         {
             var dataAsString = await SendAsync(() => PrepareGetRequest(path)).ConfigureAwait(false);
 
@@ -93,9 +95,9 @@
             return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
 
-        public async Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : IKeyEntity
+        public async Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : class, IKeyEntity
         {
-            var dataAsString = await SendAsync(() => PrepareContentRequestWithKey(new Uri(path, UriKind.Relative), contentList, HttpMethod.Patch)).ConfigureAwait(false);
+            var dataAsString = await SendAsync(() => PrepareContentRequestWithKey(new Uri(path, UriKind.Relative), contentList, new HttpMethod("PATCH"))).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<T>(dataAsString, Client.SerializerSettings);
         }
@@ -142,7 +144,8 @@
             return message;
         }
 
-        private HttpRequestMessage PreparePatchRequest(Uri path, IDictionary<string, object> content) => PrepareContentRequest(path, content, HttpMethod.Patch);
+        private HttpRequestMessage PreparePatchRequest(Uri path, IDictionary<string, object> content) => PrepareContentRequest(path, content,
+            new HttpMethod("PATCH"));
 
         private HttpRequestMessage PreparePushRequest<T>(Uri path, T content) => PrepareContentRequest(path, content, HttpMethod.Post);
 

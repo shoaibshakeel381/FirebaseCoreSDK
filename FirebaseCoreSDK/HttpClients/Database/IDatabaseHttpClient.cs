@@ -18,10 +18,10 @@
         Task<T> GetFromPathAsync<T>(string path);
         Task<T> GetFromPathAsync<T>(Uri path);
 
-        Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : IKeyEntity;
-        Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : IKeyEntity;
+        Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(Uri path) where T : class, IKeyEntity;
+        Task<IList<T>> GetFromPathWithKeyInjectedAsync<T>(string path) where T : class, IKeyEntity;
 
-        Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : IKeyEntity;
+        Task<T> UpdatePathWithKeyInjectedAsync<T>(string path, IEnumerable<T> contentList) where T : class, IKeyEntity;
 
         Task<string> PushToPathAsync<T>(Uri path, T content);
         Task<string> PushToPathAsync<T>(string path, T content);
