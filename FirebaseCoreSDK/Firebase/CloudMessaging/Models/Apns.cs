@@ -31,6 +31,12 @@
         public string CollapseKey { get; set; }
 
         /// <summary>
+        ///     Options for features provided by the FCM SDK for IOS.
+        /// </summary>
+        [JsonProperty(PropertyName = "fcm_options", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ApnsFcmOptions FcmOptions { get; set; }
+
+        /// <summary>
         ///     Notification Payload
         /// </summary>
         [JsonProperty(PropertyName = "payload")]

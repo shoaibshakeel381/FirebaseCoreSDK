@@ -22,6 +22,12 @@
         public IReadOnlyDictionary<string, string> Data { get; set; }
 
         /// <summary>
+        ///     Options for features provided by the FCM SDK for Web.
+        /// </summary>
+        [JsonProperty(PropertyName = "fcm_options", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public WebPushFcmOptions FcmOptions { get; set; }
+
+        /// <summary>
         ///     Gets or sets the Webpush HTTP headers. Refer
         ///     <see href="https://tools.ietf.org/html/rfc8030#section-5">
         ///         Webpush specification
@@ -35,6 +41,6 @@
         ///     Gets or sets the Webpush notification that will be included in the message.
         /// </summary>
         [JsonProperty(PropertyName = "notification")]
-        public WebpushNotification Notification { get; set; }
+        public WebPushNotification Notification { get; set; }
     }
 }

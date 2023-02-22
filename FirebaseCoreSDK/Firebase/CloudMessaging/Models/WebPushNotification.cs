@@ -19,7 +19,7 @@
     ///     </see>
     ///     .
     /// </summary>
-    public sealed class WebpushNotification
+    public sealed class WebPushNotification
     {
         /// <summary>
         ///     Gets or sets a collection of Webpush notification actions.

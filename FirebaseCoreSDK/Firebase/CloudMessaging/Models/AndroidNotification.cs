@@ -64,18 +64,47 @@
         public string Icon { get; set; }
 
         /// <summary>
+        ///     Contains the URL of an image that is going to be displayed in a notification. If present, it will override image
+        ///     set via <see cref="Notification.Image" />.
+        /// </summary>
+        [JsonProperty(PropertyName = "image", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Image { get; set; }
+
+        /// <summary>
+        ///     Set whether or not this notification is relevant only to the current device. Some notifications can be <br />
+        ///     bridged to other devices for remote display, such as a Wear OS watch. This hint can be set to recommend this
+        ///     notification not be bridged.
+        /// </summary>
+        [JsonProperty(PropertyName = "local_only", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? LocalOnly { get; set; }
+
+        /// <summary>
         ///     Gets or sets the sound to be played when the device receives the notification.
         /// </summary>
         [JsonProperty(PropertyName = "sound")]
         public string Sound { get; set; }
 
         /// <summary>
+        ///     When set to false or unset, the notification is automatically dismissed when the user clicks it in the panel.
+        ///     <br />When set to true, the notification persists even when the user clicks it.
+        /// </summary>
+        [JsonProperty(PropertyName = "sticky", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? Sticky { get; set; }
+
+        /// <summary>
         ///     Gets or sets the notification tag. This is an identifier used to replace existing
         ///     notifications in the notification drawer. If not specified, each request creates a new
         ///     notification.
         /// </summary>
-        [JsonProperty(PropertyName = "tag")]
+        [JsonProperty(PropertyName = "tag", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Tag { get; set; }
+
+        /// <summary>
+        ///     Sets the "ticker" text, which is sent to accessibility services. <br />Prior to API level 21 (Lollipop), sets the
+        ///     text that is displayed in the status bar when the notification first arrives.
+        /// </summary>
+        [JsonProperty(PropertyName = "ticker", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Ticker { get; set; }
 
         /// <summary>
         ///     Gets or sets the title of the Android notification. When provided, overrides the title

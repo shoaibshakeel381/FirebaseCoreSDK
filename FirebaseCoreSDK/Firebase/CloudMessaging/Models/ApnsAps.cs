@@ -51,7 +51,7 @@
         /// <summary>
         ///     Gets or sets the type of the notification.
         /// </summary>
-        [JsonProperty("category")]
+        [JsonProperty("click_action")]
         public string Category { get => _category ?? string.Empty; set => _category = value; }
 
         /// <summary>
@@ -94,7 +94,7 @@
         /// <summary>
         ///     Gets or sets the app-specific identifier for grouping notifications.
         /// </summary>
-        [JsonProperty("thread-id")]
+        [JsonProperty("thread_id")]
         public string ThreadId { get => _threadId ?? string.Empty; set => _threadId = value; }
 
         /// <summary>
@@ -124,14 +124,14 @@
         ///     Gets or sets the integer representation of the <see cref="ContentAvailable" /> property,
         ///     which is how APNs expects it.
         /// </summary>
-        [JsonProperty("content-available")]
+        [JsonProperty("content_available")]
         private int? ContentAvailableInt => ContentAvailable ? 1 : 0;
 
         /// <summary>
         ///     Gets or sets the integer representation of the <see cref="MutableContent" /> property,
         ///     which is how APNs expects it.
         /// </summary>
-        [JsonProperty("mutable-content")]
+        [JsonProperty("mutable_content")]
         private int? MutableContentInt => MutableContent ? 1 : 0;
 
         /// <summary>
