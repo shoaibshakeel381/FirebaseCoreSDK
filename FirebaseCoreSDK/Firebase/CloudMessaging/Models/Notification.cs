@@ -23,7 +23,7 @@
         ///     JPEG, PNG, BMP have full support across platforms. Animated GIF and video only work on iOS. <br />WebP and HEIF
         ///     have varying levels of support across platforms and platform versions. <br/>Android has 1MB image size limit.
         /// </summary>
-        [JsonProperty(PropertyName = "image")]
+        [JsonProperty(PropertyName = "image", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Image { get; set; }
 
         /// <summary>
